@@ -20,6 +20,7 @@ const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [categoriesLoading, setCategoriesLoading] = useState(false);
   const [update, setUpdate] = useState(false);
+  const [categoryId, setCategoryId] = useState();
 
   const getCategories = () => {
     const token = Cookies.get("token");
@@ -33,6 +34,7 @@ const Categories = () => {
         (response) => {
           console.log(response);
           setCategories(response?.data?.data);
+          setCategoryId(response?.data?.data[0]._id);
           setCategoriesLoading(false);
         },
         (error) => {
@@ -74,8 +76,6 @@ const Categories = () => {
   const toggleEditModal = () => {
     setIsEditOpen((prev) => !prev);
   };
-
-  const [categoryId, setCategoryId] = useState(categories[0]?._id);
 
   return (
     <div
