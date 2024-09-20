@@ -1,8 +1,9 @@
+import React from "react";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { IoMdNotifications } from "react-icons/io";
 import { FiPlus } from "react-icons/fi";
 import NotificationCreateModal from "../../components/Notifications/NotificationCreateModal";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import Cookies from "js-cookie";
