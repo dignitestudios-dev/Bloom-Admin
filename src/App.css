@@ -1,0 +1,89 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0px;
+  height: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #a020f0;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a020f0d4;
+  cursor: pointer;
+}
+
+.animate-to-top {
+  animation: animateTop 1s linear;
+}
+
+@keyframes animateTop {
+  from {
+    transform: translateY(20vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.animate-to-bottom {
+  animation: animateBottom 1s linear;
+}
+
+@keyframes animateBottom {
+  from {
+    transform: translateY(-70vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.shake {
+  animation: horizontal-shaking 0.5s linear;
+}
+@keyframes horizontal-shaking {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(5px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.bg {
+  background: rgb(170, 57, 226);
+  background: linear-gradient(
+    90deg,
+    rgba(170, 57, 226, 1) 0%,
+    rgba(211, 41, 232, 0.9697128851540616) 49%,
+    rgba(183, 0, 255, 1) 100%
+  );
+}
