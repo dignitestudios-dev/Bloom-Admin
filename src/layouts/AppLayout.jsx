@@ -5,9 +5,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { AppContext } from "../context/AppContext";
 import Success from "../components/global/Success";
+import Error from "../components/global/Error";
 
 const AppLayout = ({ page }) => {
-  const { baseUrl, success, setSuccess } = useContext(AppContext);
+  const { baseUrl, success, setSuccess, error, setError } =
+    useContext(AppContext);
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(false);
 
@@ -46,6 +48,9 @@ const AppLayout = ({ page }) => {
           message={success}
           setVisibility={setSuccess}
         />
+      )}
+      {error && (
+        <Error visibility={error} message={error} setVisibility={setError} />
       )}
       <div className="w-[calc(100%-270px)] h-full flex flex-col justify-start items-start">
         <Navbar />
