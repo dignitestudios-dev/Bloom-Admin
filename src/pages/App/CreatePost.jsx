@@ -13,6 +13,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
+import TextCreatePost from "../../components/create post/TextCreatePost";
 
 const CreatePost = () => {
   const [category, setCategory] = useState("daily devo");
@@ -73,6 +74,8 @@ const CreatePost = () => {
             <BooksOfMonthCreatePost id={categoryId} />
           ) : category == "enrichment" ? (
             <EnrichmentCreatePost id={categoryId} />
+          ) : category == "textpost" ? (
+            <TextCreatePost id={categoryId} />
           ) : (
             category == "events" && <EventsCreatePost id={categoryId} />
           )}

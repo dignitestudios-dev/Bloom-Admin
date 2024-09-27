@@ -13,35 +13,7 @@ import { dailydevo } from "../../data/create/dailydevo";
 import { dailydevocreate } from "../../schemas/create/DailyDevo";
 import { AppContext } from "../../context/AppContext";
 
-const DailyDevoCreatePost = ({ id }) => {
-  const [images, setImages] = useState(null);
-  const [imageBase, setImageBase] = useState(null);
-  const [imageError, setImageError] = useState(false);
-
-  const handleImage = (e) => {
-    const elem = document.getElementById("attraction-image-add");
-    elem.click();
-  };
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageBase(reader.result);
-      };
-      reader.readAsDataURL(file);
-      setImageError(false);
-      setImages(file);
-    }
-  };
-
-  const handleRemoveImage = () => {
-    let updatedImages = images;
-    updatedImages = null;
-    setImages(updatedImages);
-  };
-
+const TextCreatePost = ({ id }) => {
   const { baseUrl, navigate, setError, error, success, setSuccess } =
     useContext(AppContext);
   const [loading, setLoading] = useState(false);
@@ -53,27 +25,27 @@ const DailyDevoCreatePost = ({ id }) => {
       validateOnBlur: false,
       //// By disabling validation onChange and onBlur formik will validate on submit.
       onSubmit: async (values, action) => {
-        if (images == null) {
-          setImageError("Image is required.");
-        } else {
-          setLoading(true);
-          const headers = {
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          };
+        setLoading(true);
+        const headers = {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        };
 
-          const formdata = new FormData();
-          formdata.append("title", values?.title?.trim());
-          formdata.append("description", values?.description?.trim());
-          formdata.append("content", images);
-          formdata.append("categoryId", id);
-
-          axios.post(`${baseUrl}/api/dailyDevo`, formdata, { headers }).then(
+        axios
+          .post(
+            `${baseUrl}/api/textPost`,
+            {
+              title: values?.title?.trim(),
+              description: values?.description?.trim(),
+              categoryId: id,
+            },
+            { headers }
+          )
+          .then(
             (response) => {
               setSuccess("Post Created Successfully.");
               values.title = "";
               values.description = "";
-              setImageBase(null);
-              setImages(null);
+
               setLoading(false);
             },
             (error) => {
@@ -83,7 +55,6 @@ const DailyDevoCreatePost = ({ id }) => {
               // setFormError(error?.response?.data?.message);
             }
           );
-        }
       },
     });
 
@@ -93,43 +64,9 @@ const DailyDevoCreatePost = ({ id }) => {
       className="w-full h-auto flex flex-col justify-start items-start gap-4 "
     >
       <div className="w-full h-32 rounded-2xl flex justify-center items-center text-3xl font-bold bg text-white">
-        Daily Devo
+        Text Post
       </div>
-      <div className="w-full flex flex-col  border    rounded-2xl gap-2 justify-start items-start">
-        <div
-          onClick={handleImage}
-          className={`w-full h-40 rounded-2xl cursor-pointer bg-gray-50 flex flex-col gap-1 justify-center items-center ${
-            imageError ? "border border-red-500" : null
-          }`}
-        >
-          <input
-            id="attraction-image-add"
-            className="w-full hidden h-24 rounded-full text-sm  outline-none border-none px-4"
-            type="file"
-            accept="image/png, image/jpeg"
-            onChange={(e) => handleImageChange(e)}
-          />
 
-          {imageBase ? (
-            <img
-              src={imageBase}
-              alt=""
-              className="w-full h-full object-contain"
-            />
-          ) : (
-            <div className="w-full h-full flex flex-col gap-2 justify-center items-center">
-              <CiImageOn className="text-3xl text-gray-600 font-medium" />
-              <span className="text-xs font-medium text-gray-600">
-                Please provide the Image in jpg or png format.
-              </span>
-            </div>
-          )}
-        </div>
-
-        {imageError && (
-          <p className="text-red-700 text-sm font-medium">{imageError}</p>
-        )}
-      </div>
       <div className="w-full h-auto flex flex-col justify-start items-start gap-[2px]">
         <label
           htmlFor="title"
@@ -193,4 +130,4 @@ const DailyDevoCreatePost = ({ id }) => {
   );
 };
 
-export default DailyDevoCreatePost;
+export default TextCreatePost;

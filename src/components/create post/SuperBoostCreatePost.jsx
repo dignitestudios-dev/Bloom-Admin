@@ -62,8 +62,8 @@ const SuperBoostCreatePost = ({ id }) => {
           };
 
           const formdata = new FormData();
-          formdata.append("title", values?.title);
-          formdata.append("description", values?.description);
+          formdata.append("title", values?.title?.trim());
+          formdata.append("description", values?.description?.trim());
           formdata.append("content", images);
           formdata.append("categoryId", id);
 

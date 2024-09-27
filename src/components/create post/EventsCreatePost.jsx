@@ -97,11 +97,11 @@ const EventsCreatePost = ({ id }) => {
           };
 
           const formdata = new FormData();
-          formdata.append("title", values?.title);
-          formdata.append("description", values?.description);
-          formdata.append("streetAddress", values?.streetAddress);
-          formdata.append("city", values?.city);
-          formdata.append("state", values?.state);
+          formdata.append("title", values?.title?.trim());
+          formdata.append("description", values?.description?.trim());
+          formdata.append("streetAddress", values?.streetAddress?.trim());
+          formdata.append("city", values?.city?.trim());
+          formdata.append("state", values?.state?.trim());
           formdata.append("eventDate", eventDate);
           formdata.append("eventTime", eventTime);
           formdata.append("image", images);

@@ -55,7 +55,7 @@ const Users = () => {
           Search
         </button>
       </div>
-      <div className="w-full overflow-x-auto rounded-xl grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 border border-gray-200 bg-white px-6 py-2 ">
+      <div className="w-full overflow-x-auto rounded-xl grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 border border-gray-200 bg-white px-6 py-6 ">
         {users?.map((data, index) => {
           return (
             <div

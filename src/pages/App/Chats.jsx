@@ -53,7 +53,19 @@ export const Chats = () => {
   const [messages, setMessages] = useState([]);
   const [messageLoading, setMessageLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const [groupedMessages, setGroupedMessages] = useState([]);
   const messageEndRef = useRef();
+
+  const groupMessagesByDate = (messages) => {
+    return messages?.reduce((groups, message) => {
+      const date = new Date(message?.timestamp?.seconds * 1000).toDateString();
+      if (!groups[date]) {
+        groups[date] = [];
+      }
+      groups[date]?.push(message);
+      return groups;
+    }, {});
+  };
 
   const scrollToBottom = () => {
     if (messageEndRef.current) {
@@ -67,16 +79,40 @@ export const Chats = () => {
     e.preventDefault();
     try {
       setSending(true);
-      // Reference to the messages collection inside the specific chat room
+      const senderId = Cookies.get("id"); // Get the sender's ID
+      const recipientId = chatRoom; // Assuming chatRoom is the ID of the user being interacted with
       const docRef = collection(db, "chatroom", chatRoomId, "messages");
 
       // Add a new message to the collection
       await addDoc(docRef, {
-        senderId: Cookies.get("id"),
+        senderId,
         message: messageText,
         timestamp: Timestamp.now(),
-        // Add other fields such as senderId, recipientId, etc. if needed
       });
+
+      // Check if the recipient is already in the user list
+      const recipientExists = users.some((user) => user?.id === recipientId);
+
+      if (recipientExists) {
+        // If the recipient exists, move them to the top
+        setUsers((prevUsers) => {
+          const filteredUsers = prevUsers.filter(
+            (user) => user?.id !== recipientId
+          );
+          const updatedUsers = [
+            prevUsers.find((user) => user?.id === recipientId),
+            ...filteredUsers,
+          ];
+          return updatedUsers;
+        });
+      } else {
+        // If the recipient does not exist, add them
+        const newUser = {
+          id: recipientId,
+        };
+        setUsers((prevUsers) => [newUser, ...prevUsers]); // Add new user to the top of the list
+      }
+
       scrollToBottom();
       setInput("");
       setSending(false);
@@ -85,6 +121,7 @@ export const Chats = () => {
       console.error("Error adding message: ", e);
     }
   }
+
   const [input, setInput] = useState("");
 
   useEffect(() => {
@@ -119,25 +156,47 @@ export const Chats = () => {
     }
   }, [chatRoom]);
 
+  useEffect(() => {
+    if (messages?.length > 0) {
+      console.log(Object.keys(groupMessagesByDate(messages)));
+      setGroupedMessages(groupMessagesByDate(messages));
+    }
+  }, [messages]);
+
   return (
     <div className="w-full flex h-[92vh] -m-4 flex-row justify-between bg-white">
       <div className="w-full h-full px-5 flex flex-col justify-between">
         <div className="flex flex-col mt-5 h-full overflow-y-auto">
-          {messages?.map((message, index) => {
-            return message?.senderId == Cookies.get("id") ? (
-              <div className="flex justify-end mb-4">
-                <div className="mr-2 py-3 px-4 bg-purple-500 rounded-bl-3xl rounded-tl-3xl rounded-br-3xl text-white">
-                  {message?.message}
+          {Object.keys(groupedMessages)?.map((date, idx) => (
+            <div key={idx}>
+              <div className="flex items-center justify-center my-2">
+                <div className="text-center text-xs text-gray-800 bg-gray-200 p-2 rounded-full mx-2 w-auto">
+                  {new Date(date)?.toDateString() === new Date()?.toDateString()
+                    ? "Today"
+                    : new Date(date)?.toDateString() ===
+                      new Date(Date.now() - 86400000)?.toDateString()
+                    ? "Yesterday"
+                    : date}
                 </div>
               </div>
-            ) : (
-              <div className="flex justify-start mb-4">
-                <div className="ml-2 py-3 px-4 bg-gray-300 rounded-bl-3xl rounded-tr-3xl rounded-br-3xl text-gray-800">
-                  {message?.message}
-                </div>
-              </div>
-            );
-          })}
+              {groupedMessages[date]?.map((message, index) => {
+                return message?.senderId == Cookies.get("id") ? (
+                  <div className="flex justify-end mb-4">
+                    <div className="mr-2 py-3 px-4 bg-purple-500 rounded-bl-3xl rounded-tl-3xl rounded-br-3xl text-white">
+                      {message?.message}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex justify-start mb-4">
+                    <div className="ml-2 py-3 px-4 bg-gray-300 rounded-bl-3xl rounded-tr-3xl rounded-br-3xl text-gray-800">
+                      {message?.message}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+
           <div ref={messageEndRef} />
         </div>
         <form
@@ -392,7 +451,7 @@ export const Chats = () => {
                     }
                     className="w-10 h-10 rounded-full shadow-sm"
                   />
-                  <span className="w-3 h-3 rounded-full bg-green-500 shadow-md absolute bottom-0 right-0" />
+                  {/* <span className="w-3 h-3 rounded-full bg-green-500 shadow-md absolute bottom-0 right-0" /> */}
                 </span>
                 <div className="w-auto flex flex-col justify-start items-start">
                   <h3 className="text-sm font-semibold">{user?.name}</h3>

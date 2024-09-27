@@ -95,11 +95,11 @@ const BrittanyPlaylistCreatePost = ({ id }) => {
           };
 
           const formdata = new FormData();
-          formdata.append("title", values.title);
-          formdata.append("description", values.description);
+          formdata.append("title", values.title?.trim());
+          formdata.append("description", values.description?.trim());
           formdata.append("audioUrl", audio); // Append audio file
           formdata.append("audioCover", images);
-          formdata.append("singerName", values.singerName); // Append cover image
+          formdata.append("singerName", values.singerName?.trim()); // Append cover image
           formdata.append("categoryId", id);
           formdata.append("duration", audioDuration); // Append formatted audio duration
 

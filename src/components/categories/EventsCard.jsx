@@ -53,7 +53,11 @@ const EventsCard = ({ post }) => {
           <h1 class="mb-4 text-2xl font-bold leading-none tracking-tight text-gray-800">
             {post?.title}
           </h1>
-          <p class="leading-normal text-sm ">{post?.description}</p>
+          <p class="leading-normal text-sm ">
+            {post?.description?.length > 200
+              ? post?.description?.slice(0, 200) + "..."
+              : post?.description}
+          </p>
         </div>
       </div>
     </div>

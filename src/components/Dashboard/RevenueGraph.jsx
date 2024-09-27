@@ -103,11 +103,10 @@ const RevenueGraph = () => {
     <div className="w-full bg-white shadow flex flex-col justify-start items-start gap-2 col-span-3 h-[30rem] p-4  rounded-2xl shadow-gray-300">
       <div className="w-full flex justify-between items-start h-[2rem]">
         <div className="w-auto flex flex-col justify-start items-start ">
-          <h2 className="text-xl font-bold text-gray-900">Monthly Revenue</h2>
-          <h2 className="text-md font-semibold text-gray-700">
-            Total:{" "}
-            <span className="text-md font-bold text-purple-500">$500</span>
-          </h2>
+          <h2 className="text-xl font-bold text-gray-900">User Growth</h2>
+          <span className="text-sm text-gray-500">
+            Select a month to view analytics
+          </span>
         </div>
 
         <button className="w-28 h-8 rounded-md border flex px-2 items-center justify-between text-purple-500 border-purple-500 bg-purple-500/5 text-sm font-normal">

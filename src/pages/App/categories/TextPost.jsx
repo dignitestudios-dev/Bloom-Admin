@@ -1,9 +1,11 @@
-import SuperBoostPostCard from "../../../components/categories/SuperBoostPostCard";
+import DailyDevoPostCard from "../../../components/categories/DailyDevoPostCard";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { AppContext } from "../../../context/AppContext";
-const SuperBoost = ({ id }) => {
+import TextPostCard from "../../../components/categories/TextPostCard";
+
+const TextPost = ({ id }) => {
   const { error, setError, baseUrl } = useContext(AppContext);
   const [postsLoading, setPostsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -17,7 +19,7 @@ const SuperBoost = ({ id }) => {
       Authorization: `Bearer ${Cookies.get("token")}`,
     };
     axios
-      .get(`${baseUrl}/api/superBoost/${id}`, { headers })
+      .get(`${baseUrl}/api/textpost`, { headers })
       .then((response) => {
         setPosts(response?.data?.data);
         setPostsLoading(false);
@@ -31,6 +33,7 @@ const SuperBoost = ({ id }) => {
   useEffect(() => {
     id && getAllposts();
   }, [reload, id]);
+
   return (
     <div className="w-full flex flex-col justify-start items-start gap-4">
       <div className="w-full h-12 flex justify-start items-center gap-2  relative">
@@ -45,13 +48,13 @@ const SuperBoost = ({ id }) => {
           Search
         </button>
       </div>
-      <div className="w-full h-full grid grid-cols-3 gap-4 justify-start items-start">
-        {posts?.map((post, index) => {
-          return <SuperBoostPostCard key={index} post={post} />;
+      <div className="w-full h-full grid gap-4 justify-start items-start">
+        {posts?.map((post) => {
+          return <TextPostCard post={post} />;
         })}
       </div>
     </div>
   );
 };
 
-export default SuperBoost;
+export default TextPost;

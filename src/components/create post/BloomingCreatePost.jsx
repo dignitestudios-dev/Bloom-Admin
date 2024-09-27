@@ -64,7 +64,7 @@ const BloomingCreatePost = ({ id }) => {
           };
 
           const formdata = new FormData();
-          formdata.append("title", values?.title);
+          formdata.append("title", values?.title?.trim());
           formdata.append("image", images);
           formdata.append("categoryId", id);
 

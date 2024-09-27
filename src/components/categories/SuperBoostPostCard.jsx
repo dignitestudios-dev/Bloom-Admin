@@ -4,7 +4,7 @@ const SuperBoostPostCard = ({ post }) => {
   return (
     <div className="w-full h-80 rounded-2xl relative">
       <img
-        src={post?.image}
+        src={post?.content}
         alt="super-boost-post-card"
         className="w-full h-full rounded-2xl absolute top-0 left-0"
       />
@@ -16,10 +16,9 @@ const SuperBoostPostCard = ({ post }) => {
       <div className="w-full px-3 absolute bottom-3 left-0 h-auto flex flex-col gap-[1px]  ">
         <h2 className="text-white text-md font-semibold">{post?.title}</h2>
         <p className="text-white text-xs font-normal leading-4 tracking-tighter">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero cum unde
-          sequi voluptas reprehenderit iste? Ipsam molestias cumque nemo
-          laboriosam a aspernatur aliquam asperiores natus, quas tempore facilis
-          autem distinctio.
+          {post?.description?.length > 200
+            ? post?.description?.slice(0, 200) + "..."
+            : post?.description}
         </p>
       </div>
     </div>

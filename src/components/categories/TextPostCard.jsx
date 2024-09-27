@@ -4,19 +4,10 @@ import { SlLike } from "react-icons/sl";
 import { FaRegCommentDots } from "react-icons/fa";
 import { LiaCommentDots } from "react-icons/lia";
 
-const DailyDevoPostCard = ({ post }) => {
+const TextPostCard = ({ post }) => {
   const [viewAll, setViewAll] = useState(false);
   return (
     <div class="bg-white w-full rounded-md border h-auto py-3 px-3 ">
-      <div className="w-full h-64 bg-gray-200 rounded-md">
-        <img
-          src={
-            post?.content ? post?.content : "https://via.placeholder.com/500"
-          }
-          alt="image"
-          className="w-full h-full object-contain rounded-md"
-        />
-      </div>
       <span className="text-md font-medium text-gray-700 pt-4 px-1">
         {post?.title}
       </span>
@@ -273,4 +264,4 @@ const DailyDevoPostCard = ({ post }) => {
   );
 };
 
-export default DailyDevoPostCard;
+export default TextPostCard;

@@ -34,9 +34,6 @@ const Navbar = () => {
             {Cookies.get("email")}
           </h3>
         </div>
-        <button className="w-6 h-6 text-gray-400 rounded-full flex items-center justify-center border">
-          <RxCaretDown />
-        </button>
       </div>
     </div>
   );

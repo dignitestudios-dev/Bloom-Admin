@@ -63,10 +63,10 @@ const BooksOfMonthCreatePost = ({ id }) => {
           };
 
           const formdata = new FormData();
-          formdata.append("title", values?.title);
-          formdata.append("description", values?.description);
-          formdata.append("author", values?.author);
-          formdata.append("price", values?.price);
+          formdata.append("title", values?.title?.trim());
+          formdata.append("description", values?.description?.trim());
+          formdata.append("author", values?.author?.trim());
+          formdata.append("price", parseInt(values?.price));
           formdata.append("image", images);
           formdata.append("categoryId", id);
 
@@ -197,7 +197,7 @@ const BooksOfMonthCreatePost = ({ id }) => {
             <PiCurrencyDollarBold />
           </span>
           <input
-            type="text"
+            type="number"
             name="price"
             id="price"
             value={values.price}

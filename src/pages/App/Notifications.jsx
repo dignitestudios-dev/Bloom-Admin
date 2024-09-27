@@ -23,9 +23,9 @@ const Notifications = () => {
       Authorization: `Bearer ${Cookies.get("token")}`,
     };
     axios
-      .get(`${baseUrl}/api/allNotification`, { headers })
+      .get(`${baseUrl}/api/adminNotification`, { headers })
       .then((response) => {
-        setNotifications(response?.data?.data);
+        setNotifications(response?.data?.data?.reverse());
         setNotificationLoading(false);
       })
       .catch((error) => {
@@ -63,6 +63,7 @@ const Notifications = () => {
       <NotificationCreateModal
         isOpen={isCreateOpen}
         setIsOpen={setIsCreateOpen}
+        setReload={setReload}
       />
       <button
         onClick={() => setIsCreateOpen((prev) => !prev)}
