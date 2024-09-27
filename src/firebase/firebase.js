@@ -5,12 +5,12 @@ import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APP_FIREBASE_KEY,
-  authDomain: "bloom-9593f.firebaseapp.com",
-  projectId: "bloom-9593f",
-  storageBucket: "bloom-9593f.appspot.com",
-  messagingSenderId: "196357081175",
-  appId: "1:196357081175:web:908e528b85a47af208bb12",
-  measurementId: "G-7RMQT9DJJY",
+  authDomain: "bloom-8ddae.firebaseapp.com",
+  projectId: "bloom-8ddae",
+  storageBucket: "bloom-8ddae.appspot.com",
+  messagingSenderId: "321624617498",
+  appId: "1:321624617498:web:8da2ab5fa5f7e1b65597a3",
+  measurementId: "G-FX8S28FKHX",
 };
 
 const app = initializeApp(firebaseConfig);
