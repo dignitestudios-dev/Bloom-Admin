@@ -142,7 +142,7 @@ const Categories = () => {
           <BooksOfTheMonth id={categoryId} />
         ) : currentCategory == "Enrichment" ? (
           <Enrichment id={categoryId} />
-        ) : currentCategory == "TextPost" ? (
+        ) : currentCategory == "Post" ? (
           <TextPost id={categoryId} />
         ) : (
           currentCategory == "Events" && <Events id={categoryId} />

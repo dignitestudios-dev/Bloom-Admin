@@ -64,7 +64,7 @@ const TextCreatePost = ({ id }) => {
       className="w-full h-auto flex flex-col justify-start items-start gap-4 "
     >
       <div className="w-full h-32 rounded-2xl flex justify-center items-center text-3xl font-bold bg text-white">
-        Text Post
+        Post
       </div>
 
       <div className="w-full h-auto flex flex-col justify-start items-start gap-[2px]">

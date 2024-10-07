@@ -35,10 +35,11 @@ const Users = () => {
     getAllUsers();
   }, [reload]);
 
-  const filteredData = users.filter((data) => {
-    data?.name?.toLowerCase().includes(search?.toLowerCase()) ||
-      data?.email?.toLowerCase().includes(search?.toLowerCase());
-  });
+  const filteredData = users.filter(
+    (user) =>
+      user?.name?.toLowerCase().includes(search?.toLowerCase()) ||
+      user?.email?.toLowerCase().includes(search?.toLowerCase())
+  );
   return (
     <div className="w-full flex flex-col justify-start items-start gap-3">
       <div className="w-full h-12 flex justify-start items-center gap-2  relative">
@@ -56,7 +57,7 @@ const Users = () => {
         </button>
       </div>
       <div className="w-full overflow-x-auto rounded-xl grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 border border-gray-200 bg-white px-6 py-6 ">
-        {users?.map((data, index) => {
+        {filteredData?.map((data, index) => {
           return (
             <div
               key={index}

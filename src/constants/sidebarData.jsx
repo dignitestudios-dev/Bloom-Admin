@@ -8,7 +8,7 @@ import { LuBadgeDollarSign } from "react-icons/lu";
 import { GrUpdate } from "react-icons/gr";
 import { RxUpdate } from "react-icons/rx";
 import { WiDayCloudyWindy } from "react-icons/wi";
-
+import { PiHandWavingLight } from "react-icons/pi";
 export const sidebar = [
   {
     title: "Dashboard",
@@ -41,7 +41,11 @@ export const sidebar = [
     icon: <MdOutlineCategory />,
     url: "/categories",
   },
-
+  {
+    title: "Hey You!",
+    icon: <PiHandWavingLight />,
+    url: "/hey-you",
+  },
   {
     title: "Update Password",
     icon: <RxUpdate />,

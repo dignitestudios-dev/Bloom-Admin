@@ -33,7 +33,7 @@ const SuperBoost = ({ id }) => {
   }, [reload, id]);
   return (
     <div className="w-full flex flex-col justify-start items-start gap-4">
-      <div className="w-full h-12 flex justify-start items-center gap-2  relative">
+      {/* <div className="w-full h-12 flex justify-start items-center gap-2  relative">
         <input
           type="text"
           id="name"
@@ -44,7 +44,7 @@ const SuperBoost = ({ id }) => {
         <button className="active:scale-95 absolute right-1 top-2 rounded-full bg-purple-500 px-8 h-10 font-medium text-white outline-none   hover:opacity-90">
           Search
         </button>
-      </div>
+      </div> */}
       <div className="w-full h-full grid grid-cols-3 gap-4 justify-start items-start">
         {posts?.map((post, index) => {
           return <SuperBoostPostCard key={index} post={post} />;

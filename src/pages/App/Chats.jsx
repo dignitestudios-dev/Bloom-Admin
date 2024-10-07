@@ -163,6 +163,10 @@ export const Chats = () => {
     }
   }, [messages]);
 
+  const filteredData = users.filter((user) =>
+    user?.name?.toLowerCase().includes(search?.toLowerCase())
+  );
+
   return (
     <div className="w-full flex h-[92vh] -m-4 flex-row justify-between bg-white">
       <div className="w-full h-full px-5 flex flex-col justify-between">
@@ -426,6 +430,8 @@ export const Chats = () => {
           <input
             className="w-[90%] shadow-md h-10 px-4 border outline-none focus:border-purple-500 rounded-full"
             type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             placeholder="Search"
           />
           <button className="w-9 h-9 shadow-md rounded-full bg-purple-500 hover:opacity-95 text-lg text-white flex items-center justify-center font-medium">
@@ -433,7 +439,7 @@ export const Chats = () => {
           </button>
         </div>
         <div className="w-full h-auto grid grid-cols-1 gap-0">
-          {users?.map((user, index) => {
+          {filteredData?.map((user, index) => {
             return (
               <div
                 key={index}

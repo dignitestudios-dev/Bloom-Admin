@@ -38,6 +38,10 @@ const Notifications = () => {
     getAllNotifications();
   }, [reload]);
 
+  const filteredData = notifications.filter((notification) =>
+    notification?.title?.toLowerCase().includes(search?.toLowerCase())
+  );
+
   function timeAgo(isoString) {
     const now = new Date();
     const createdAt = new Date(isoString);
@@ -80,6 +84,8 @@ const Notifications = () => {
         <input
           type="text"
           id="name"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           placeholder="e.g. New Feature in built"
           className="mt-2 block w-full rounded-full border border-gray-200 px-3 h-12 shadow-sm outline-none focus:border-gradient focus:ring focus:ring-purple-200 focus:ring-opacity-50"
         />
@@ -89,7 +95,7 @@ const Notifications = () => {
         </button>
       </div>
       <div className="w-full h-auto grid grid-cols-3 gap-2 justify-start items-start">
-        {notifications?.map((notification, index) => {
+        {filteredData?.map((notification, index) => {
           return (
             <div
               key={index}

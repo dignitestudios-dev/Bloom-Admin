@@ -74,7 +74,7 @@ const CreatePost = () => {
             <BooksOfMonthCreatePost id={categoryId} />
           ) : category == "enrichment" ? (
             <EnrichmentCreatePost id={categoryId} />
-          ) : category == "textpost" ? (
+          ) : category == "post" ? (
             <TextCreatePost id={categoryId} />
           ) : (
             category == "events" && <EventsCreatePost id={categoryId} />

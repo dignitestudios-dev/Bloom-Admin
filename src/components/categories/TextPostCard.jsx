@@ -7,8 +7,8 @@ import { LiaCommentDots } from "react-icons/lia";
 const TextPostCard = ({ post }) => {
   const [viewAll, setViewAll] = useState(false);
   return (
-    <div class="bg-white w-full rounded-md border h-auto py-3 px-3 ">
-      <span className="text-md font-medium text-gray-700 pt-4 px-1">
+    <div class="bg-gray-50 w-full rounded-md border h-auto min-h-48 relative py-3 px-3 ">
+      <span className="text-lg font-medium text-gray-700 pt-4 px-1">
         {post?.title}
       </span>
       <p className="w-[90%] text-sm font-normal text-gray-600 px-1">
@@ -16,7 +16,7 @@ const TextPostCard = ({ post }) => {
           ? post?.description?.slice(0, 200) + "..."
           : post?.description}
       </p>
-      <div class="w-full h-8 flex items-center px-3 my-3">
+      <div class="w-full h-8 flex items-center absolute bottom-1 left-0 px-3 mt-2">
         <div class="bg-blue-500 z-10 w-5 h-5 rounded-full flex items-center justify-center ">
           <svg
             class="w-3 h-3 fill-current text-white"
@@ -45,7 +45,7 @@ const TextPostCard = ({ post }) => {
         </div>
       </div>
 
-      <div className="w-full h-auto flex flex-col gap-1 justify-start items-start">
+      {/* <div className="w-full h-auto flex flex-col gap-1 justify-start items-start">
         {viewAll ? (
           <article class="w-full p-2 mb-2 text-base bg-purple-500/5 rounded-lg ">
             <footer class="flex justify-between items-center ">
@@ -85,7 +85,7 @@ const TextPostCard = ({ post }) => {
                 </svg>
                 <span class="sr-only">Comment settings</span>
               </button>
-              {/* <!-- Dropdown menu --> */}
+
               <div
                 id="dropdownComment2"
                 class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow "
@@ -156,7 +156,7 @@ const TextPostCard = ({ post }) => {
                   </svg>
                   <span class="sr-only">Comment settings</span>
                 </button>
-                {/* <!-- Dropdown menu --> */}
+
                 <div
                   id="dropdownComment2"
                   class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow "
@@ -226,7 +226,7 @@ const TextPostCard = ({ post }) => {
                   </svg>
                   <span class="sr-only">Comment settings</span>
                 </button>
-                {/* <!-- Dropdown menu --> */}
+
                 <div
                   id="dropdownComment2"
                   class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow "
@@ -259,7 +259,7 @@ const TextPostCard = ({ post }) => {
             </article>
           </>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

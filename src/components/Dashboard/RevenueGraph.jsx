@@ -100,7 +100,7 @@ const data = {
 };
 const RevenueGraph = () => {
   return (
-    <div className="w-full bg-white shadow flex flex-col justify-start items-start gap-2 col-span-3 h-[30rem] p-4  rounded-2xl shadow-gray-300">
+    <div className="w-full bg-white shadow flex flex-col justify-start items-start gap-2 col-span-3 h-[32rem] p-4  rounded-2xl shadow-gray-300">
       <div className="w-full flex justify-between items-start h-[2rem]">
         <div className="w-auto flex flex-col justify-start items-start ">
           <h2 className="text-xl font-bold text-gray-900">User Growth</h2>
@@ -116,7 +116,7 @@ const RevenueGraph = () => {
           </span>
         </button>
       </div>
-      <div className="h-[24rem] w-full flex justify-center items-center">
+      <div className="h-[26rem] w-full flex justify-center items-end">
         <Bar data={data} options={options} />
       </div>
     </div>

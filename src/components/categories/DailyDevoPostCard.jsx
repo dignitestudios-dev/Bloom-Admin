@@ -54,7 +54,7 @@ const DailyDevoPostCard = ({ post }) => {
         </div>
       </div>
 
-      <div className="w-full h-auto flex flex-col gap-1 justify-start items-start">
+      {/* <div className="w-full h-auto flex flex-col gap-1 justify-start items-start">
         {viewAll ? (
           <article class="w-full p-2 mb-2 text-base bg-purple-500/5 rounded-lg ">
             <footer class="flex justify-between items-center ">
@@ -94,7 +94,6 @@ const DailyDevoPostCard = ({ post }) => {
                 </svg>
                 <span class="sr-only">Comment settings</span>
               </button>
-              {/* <!-- Dropdown menu --> */}
               <div
                 id="dropdownComment2"
                 class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow "
@@ -165,7 +164,6 @@ const DailyDevoPostCard = ({ post }) => {
                   </svg>
                   <span class="sr-only">Comment settings</span>
                 </button>
-                {/* <!-- Dropdown menu --> */}
                 <div
                   id="dropdownComment2"
                   class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow "
@@ -235,7 +233,6 @@ const DailyDevoPostCard = ({ post }) => {
                   </svg>
                   <span class="sr-only">Comment settings</span>
                 </button>
-                {/* <!-- Dropdown menu --> */}
                 <div
                   id="dropdownComment2"
                   class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow "
@@ -268,7 +265,7 @@ const DailyDevoPostCard = ({ post }) => {
             </article>
           </>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
