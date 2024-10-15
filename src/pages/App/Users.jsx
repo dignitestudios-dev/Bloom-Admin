@@ -5,6 +5,7 @@ import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Loader from "../../components/global/Loader";
 
 const Users = () => {
   const { error, setError, baseUrl } = useContext(AppContext);
@@ -57,33 +58,44 @@ const Users = () => {
         </button>
       </div>
       <div className="w-full overflow-x-auto rounded-xl grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 border border-gray-200 bg-white px-6 py-6 ">
-        {filteredData?.map((data, index) => {
-          return (
-            <div
-              key={index}
-              className="w-full bg-gray-50 flex justify-start items-center gap-2 rounded-xl p-3 border"
-            >
-              <img
-                src={
-                  data?.profilePicture
-                    ? data?.profilePicture
-                    : `https://eu.ui-avatars.com/api/?name=${data?.name}&size=250`
-                }
-                alt=""
-                className="w-10 h-10 rounded-lg"
-              />
+        {userLoading && (
+          <div className="w-full col-span-4 h-[80vh] flex items-center justify-center">
+            <Loader />
+          </div>
+        )}
+        {!userLoading && filteredData?.length > 0
+          ? filteredData?.map((data, index) => {
+              return (
+                <div
+                  key={index}
+                  className="w-full bg-gray-50 flex justify-start items-center gap-2 rounded-xl p-3 border"
+                >
+                  <img
+                    src={
+                      data?.profilePicture
+                        ? data?.profilePicture
+                        : `https://eu.ui-avatars.com/api/?name=${data?.name}&size=250`
+                    }
+                    alt=""
+                    className="w-10 h-10 rounded-lg"
+                  />
 
-              <div className="w-auto flex flex-col justify-start items-start">
-                <span className="text-md font-medium text-gray-900">
-                  {data?.name}
-                </span>
-                <p className="text-xs font-medium  text-gray-600">
-                  {data?.email}
-                </p>
+                  <div className="w-auto flex flex-col justify-start items-start">
+                    <span className="text-md font-medium text-gray-900">
+                      {data?.name}
+                    </span>
+                    <p className="text-xs font-medium  text-gray-600">
+                      {data?.email}
+                    </p>
+                  </div>
+                </div>
+              );
+            })
+          : !userLoading && (
+              <div className="w-full col-span-4 h-[90vh] flex items-center justify-center">
+                <img src="/no-data.jpg" alt="" className="h-96" />
               </div>
-            </div>
-          );
-        })}
+            )}
       </div>
     </div>
   );

@@ -8,7 +8,6 @@ import Users from "../pages/App/Users";
 import DailyDevo from "../pages/App/categories/DailyDevo";
 import ChangePassword from "../pages/App/profile/ChangePassword";
 import CreatePost from "../pages/App/CreatePost";
-import HeyYou from "../pages/App/categories/HeyYou";
 
 export const appRoutes = [
   {
@@ -26,11 +25,7 @@ export const appRoutes = [
     url: "/users",
     page: <AppLayout page={<Users />} />,
   },
-  {
-    title: "Hey You",
-    url: "/hey-you",
-    page: <AppLayout page={<HeyYou />} />,
-  },
+
   {
     title: "Notifications",
     url: "/notifications",

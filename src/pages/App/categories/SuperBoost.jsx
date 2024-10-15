@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { AppContext } from "../../../context/AppContext";
+import Loader from "../../../components/global/Loader";
 const SuperBoost = ({ id }) => {
   const { error, setError, baseUrl } = useContext(AppContext);
   const [postsLoading, setPostsLoading] = useState(false);
@@ -46,9 +47,20 @@ const SuperBoost = ({ id }) => {
         </button>
       </div> */}
       <div className="w-full h-full grid grid-cols-3 gap-4 justify-start items-start">
-        {posts?.map((post, index) => {
-          return <SuperBoostPostCard key={index} post={post} />;
-        })}
+        {postsLoading && (
+          <div className="w-full col-span-4 h-[90vh] flex items-center justify-center">
+            <Loader />
+          </div>
+        )}
+        {!postsLoading && posts?.length > 0
+          ? posts?.map((post, index) => {
+              return <SuperBoostPostCard key={index} post={post} />;
+            })
+          : !postsLoading && (
+              <div className="w-full col-span-3 h-[90vh] flex items-center justify-center">
+                <img src="/no-data.jpg" alt="" className="h-96" />
+              </div>
+            )}
       </div>
     </div>
   );

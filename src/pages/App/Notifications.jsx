@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
 import Cookies from "js-cookie";
+import Loader from "../../components/global/Loader";
 
 const Notifications = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -95,33 +96,44 @@ const Notifications = () => {
         </button>
       </div>
       <div className="w-full h-auto grid grid-cols-3 gap-2 justify-start items-start">
-        {filteredData?.map((notification, index) => {
-          return (
-            <div
-              key={index}
-              class=" px-6 py-4 bg-white border rounded-lg h-28  w-full"
-            >
-              <div class=" inline-flex items-center justify-between w-full">
-                <div class="inline-flex gap-2 items-center">
-                  <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-                    <IoMdNotifications className="text-purple-600 text-2xl" />
+        {notificationLoading && (
+          <div className="w-full col-span-3 h-[80vh] flex items-center justify-center">
+            <Loader />
+          </div>
+        )}
+        {!notificationLoading && filteredData?.length > 0
+          ? filteredData?.map((notification, index) => {
+              return (
+                <div
+                  key={index}
+                  class=" px-6 py-4 bg-white border rounded-lg h-28  w-full"
+                >
+                  <div class=" inline-flex items-center justify-between w-full">
+                    <div class="inline-flex gap-2 items-center">
+                      <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
+                        <IoMdNotifications className="text-purple-600 text-2xl" />
+                      </div>
+                      <h3 class="font-bold text-base text-gray-800">
+                        {notification?.title}
+                      </h3>
+                    </div>
+                    <p class="text-xs text-gray-500">
+                      {timeAgo(notification?.createdAt)}
+                    </p>
                   </div>
-                  <h3 class="font-bold text-base text-gray-800">
-                    {notification?.title}
-                  </h3>
+                  <p class="mt-1 text-sm">
+                    {notification?.message?.length > 80
+                      ? notification?.message?.slice(0, 80) + "..."
+                      : notification?.message}
+                  </p>
                 </div>
-                <p class="text-xs text-gray-500">
-                  {timeAgo(notification?.createdAt)}
-                </p>
+              );
+            })
+          : !notificationLoading && (
+              <div className="w-full col-span-3 h-[90vh] flex items-center justify-center">
+                <img src="/no-data.jpg" alt="" className="h-96" />
               </div>
-              <p class="mt-1 text-sm">
-                {notification?.message?.length > 80
-                  ? notification?.message?.slice(0, 80) + "..."
-                  : notification?.message}
-              </p>
-            </div>
-          );
-        })}
+            )}
       </div>
     </div>
   );

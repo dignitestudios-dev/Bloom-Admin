@@ -14,6 +14,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { AppContext } from "../../context/AppContext";
 import TextCreatePost from "../../components/create post/TextCreatePost";
+import HeyYouCreatePost from "../../components/create post/HeyYouCreatePost";
 
 const CreatePost = () => {
   const [category, setCategory] = useState("daily devo");
@@ -76,8 +77,10 @@ const CreatePost = () => {
             <EnrichmentCreatePost id={categoryId} />
           ) : category == "post" ? (
             <TextCreatePost id={categoryId} />
+          ) : category == "events" ? (
+            <EventsCreatePost id={categoryId} />
           ) : (
-            category == "events" && <EventsCreatePost id={categoryId} />
+            category == "Hey You" && <HeyYouCreatePost />
           )}
         </div>
       </div>
@@ -102,6 +105,20 @@ const CreatePost = () => {
               </button>
             );
           })}
+
+          <button
+            onClick={() => {
+              setCategory("Hey You");
+              setCategoryId(null);
+            }}
+            className={`w-full rounded-full outline-none text-sm focus:ring focus:ring-purple-200 h-12  focus:bg-purple-500 focus:text-white ${
+              category == "Hey You"
+                ? "bg text-white"
+                : "bg-gray-100 text-[#191919]"
+            } font-medium text-md`}
+          >
+            Hey You
+          </button>
         </div>
       </div>
     </div>

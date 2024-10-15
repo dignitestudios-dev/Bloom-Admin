@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   Chart,
@@ -82,42 +82,89 @@ function getRandomDataArray() {
 
   return randomDataArray;
 }
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const RevenueGraph = ({ data, updateMonth }) => {
+  const [currentMonthIndex, setCurrentMonthIndex] = useState(
+    new Date().getMonth()
+  );
+  const [selectedMonth, setSelectedMonth] = useState(months[currentMonthIndex]);
+  const [isOpen, setIsOpen] = useState(false);
 
-// Sample data
-const data = {
-  labels: getDaysArray(),
-  datasets: [
-    {
-      label: "Revenue",
-      data: getRandomDataArray(),
-      backgroundColor: "rgba(160, 32, 240, 0.2)",
-      borderColor: "rgba(160, 32, 240, 1)",
-      borderWidth: 1,
-      borderRadius: 50, // This adds rounded corners
-      borderSkipped: false,
-    },
-  ],
-};
-const RevenueGraph = () => {
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleSelectMonth = (month, key) => {
+    setSelectedMonth(month);
+    setIsOpen(false);
+    updateMonth(key + 1);
+  };
+  // Sample data
+  const dataset = {
+    labels: data?.days,
+    datasets: [
+      {
+        label: "Revenue",
+        data: data?.users,
+        backgroundColor: "rgba(160, 32, 240, 0.2)",
+        borderColor: "rgba(160, 32, 240, 1)",
+        borderWidth: 1,
+        borderRadius: 50, // This adds rounded corners
+        borderSkipped: false,
+      },
+    ],
+  };
   return (
     <div className="w-full bg-white shadow flex flex-col justify-start items-start gap-2 col-span-3 h-[32rem] p-4  rounded-2xl shadow-gray-300">
-      <div className="w-full flex justify-between items-start h-[2rem]">
-        <div className="w-auto flex flex-col justify-start items-start ">
+      <div className="relative w-full flex justify-between items-start h-[2rem]">
+        <div className="w-auto flex flex-col justify-start items-start">
           <h2 className="text-xl font-bold text-gray-900">User Growth</h2>
           <span className="text-sm text-gray-500">
             Select a month to view analytics
           </span>
         </div>
 
-        <button className="w-28 h-8 rounded-md border flex px-2 items-center justify-between text-purple-500 border-purple-500 bg-purple-500/5 text-sm font-normal">
-          <span>January</span>
-          <span>
-            <RxCaretDown />
-          </span>
-        </button>
+        <div className="relative">
+          <button
+            className="w-28 h-8 rounded-md border flex px-2 items-center justify-between text-purple-500 border-purple-500 bg-purple-500/5 text-sm font-normal"
+            onClick={toggleDropdown}
+          >
+            <span>{selectedMonth}</span>
+            <span>
+              <RxCaretDown />
+            </span>
+          </button>
+
+          {isOpen && (
+            <ul className="absolute z-10 bg-white border rounded-md mt-1 w-28 shadow-lg">
+              {months.map((month, key) => (
+                <li
+                  key={month}
+                  className="px-2 py-1 hover:bg-purple-200 cursor-pointer"
+                  onClick={() => handleSelectMonth(month, key)}
+                >
+                  {month}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
       <div className="h-[26rem] w-full flex justify-center items-end">
-        <Bar data={data} options={options} />
+        <Bar data={dataset} options={options} />
       </div>
     </div>
   );

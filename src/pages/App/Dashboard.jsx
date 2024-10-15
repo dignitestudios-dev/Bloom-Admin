@@ -14,6 +14,11 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
   const [dataLoading, setDataLoading] = useState(false);
 
+  const [graph, setGraph] = useState(null);
+  const [graphLoading, setGraphLoading] = useState(false);
+
+  const [month, setMonth] = useState(new Date().getMonth());
+
   const getData = () => {
     const token = Cookies.get("token");
 
@@ -40,6 +45,45 @@ const Dashboard = () => {
       navigate("Login", "/login");
     }
   };
+
+  const updateMonth = (month) => {
+    setMonth(month);
+  };
+
+  const getGraphData = () => {
+    const token = Cookies.get("token");
+
+    if (token) {
+      setGraphLoading(true);
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      axios
+        .get(`${baseUrl}/admin/userByMonth?month=${month}`, {
+          headers,
+        })
+        .then(
+          (response) => {
+            setGraph(response?.data?.data);
+            setGraphLoading(false);
+          },
+          (error) => {
+            setError(error?.response?.data?.message);
+            setGraphLoading(false);
+            if (error?.response?.status == 401) {
+              Cookies.remove("token");
+              navigate("Login", "/login");
+            }
+          }
+        );
+    } else {
+      navigate("Login", "/login");
+    }
+  };
+  useEffect(() => {
+    getGraphData();
+  }, [month]);
+
   useEffect(() => {
     getData();
   }, []);
@@ -51,7 +95,7 @@ const Dashboard = () => {
         <PostsStats data={data} />
       </div>
       <div className="w-full grid grid-cols-5 justify-start  items-start gap-4">
-        <RevenueGraph />
+        <RevenueGraph data={graph} updateMonth={updateMonth} />
         <BusinessMvr />
       </div>
       {/* <TransactionsTable /> */}

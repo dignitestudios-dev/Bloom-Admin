@@ -76,9 +76,11 @@ const Categories = () => {
 
   const [imageBase, setImageBase] = useState(null);
   const [imageError, setImageError] = useState(false);
+  const [catId, setCatId] = useState(null);
 
-  const handleImage = (e) => {
+  const handleImage = (e, id) => {
     const elem = document.getElementById("image");
+    setCatId(id);
     elem.click();
   };
 
@@ -103,7 +105,7 @@ const Categories = () => {
     };
 
     axios
-      .put(`${baseUrl}/api/category/${categoryId}`, formdata, { headers })
+      .put(`${baseUrl}/api/category/${catId}`, formdata, { headers })
       .then((response) => {
         setUpdate((prev) => !prev);
       })
@@ -179,12 +181,16 @@ const Categories = () => {
             })
           : categories?.map((category, key) => {
               return (
-                <div className="w-full flex border pr-1 h-auto justify-start items-center gap-2 rounded-lg">
+                <div
+                  className={`w-full group flex hover:bg-purple-600/20 ${
+                    categoryId == category?._id && "bg-purple-600/20"
+                  } border pr-1 h-auto justify-start items-center gap-2 rounded-lg`}
+                >
                   <button
                     onClick={(e) => {
                       handleCategoryChange(e, category?.name, category?._id);
                     }}
-                    className="w-[80%] hover:bg-purple-600/5 cursor-pointer bg-white      h-auto flex flex-col justify-start items-start gap-2"
+                    className="w-[80%]  cursor-pointer       h-auto flex flex-col justify-start items-start gap-2"
                   >
                     <div className="w-full   h-auto p-2  flex flex-col gap-6 justify-between items-start rounded-xl md:rounded-full  ">
                       <div className="w-full h-auto flex flex-col md:flex-row gap-3 md:gap-3 justify-between items-start md:items-center">
@@ -230,7 +236,7 @@ const Categories = () => {
                     <button
                       ref={buttonRef}
                       onClick={(e) => {
-                        handleImage();
+                        handleImage(e, category?._id);
                       }}
                       className="w-auto capitalize px-4 h-6 flex items-center justify-center rounded-full bg-purple-500 text-white text-xs font-medium"
                     >

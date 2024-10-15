@@ -41,11 +41,7 @@ export const sidebar = [
     icon: <MdOutlineCategory />,
     url: "/categories",
   },
-  {
-    title: "Hey You!",
-    icon: <PiHandWavingLight />,
-    url: "/hey-you",
-  },
+
   {
     title: "Update Password",
     icon: <RxUpdate />,

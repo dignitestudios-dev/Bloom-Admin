@@ -2,7 +2,7 @@ import React from "react";
 
 const BrittanyPlaylistCard = ({ post }) => {
   return (
-    <div class="bg-white w-full h-[26rem] shadow rounded-2xl border p-3">
+    <div class="bg-white w-full h-[26rem] relative shadow rounded-2xl border p-3">
       <div class="group h-64 relative">
         <img
           class="w-full h-full block rounded-xl"
@@ -25,7 +25,11 @@ const BrittanyPlaylistCard = ({ post }) => {
         </div> */}
       </div>
       <div class="py-3 px-2">
-        <h3 class="text-[#0e0e0e] text-lg font-semibold">{post?.title}</h3>
+        <h3 class="text-[#0e0e0e] text-lg font-semibold">
+          {post?.title?.length > 40
+            ? post?.title?.slice(0, 40) + "..."
+            : post?.title}
+        </h3>
         <h3 class="text-purple-500 text-sm font-medium">{post?.singerName}</h3>
 
         <p class="text-gray-700 text-xs font-normal leading-tight tracking-tighter">
@@ -34,7 +38,7 @@ const BrittanyPlaylistCard = ({ post }) => {
             : post?.description}
         </p>
       </div>
-      <div class="w-full flex justify-start items-center gap-3 ">
+      <div class="w-full flex absolute bottom-1 left-2 justify-start items-center gap-3 ">
         <button class="flex hover:bg-gray-50 rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"

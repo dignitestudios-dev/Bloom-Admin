@@ -17,6 +17,7 @@ import {
   addDoc,
   Timestamp,
 } from "firebase/firestore";
+import Loader from "../../components/global/Loader";
 
 export const Chats = () => {
   const { error, setError, baseUrl } = useContext(AppContext);
@@ -158,7 +159,6 @@ export const Chats = () => {
 
   useEffect(() => {
     if (messages?.length > 0) {
-      console.log(Object.keys(groupMessagesByDate(messages)));
       setGroupedMessages(groupMessagesByDate(messages));
     }
   }, [messages]);
@@ -170,39 +170,56 @@ export const Chats = () => {
   return (
     <div className="w-full flex h-[92vh] -m-4 flex-row justify-between bg-white">
       <div className="w-full h-full px-5 flex flex-col justify-between">
-        <div className="flex flex-col mt-5 h-full overflow-y-auto">
-          {Object.keys(groupedMessages)?.map((date, idx) => (
-            <div key={idx}>
-              <div className="flex items-center justify-center my-2">
-                <div className="text-center text-xs text-gray-800 bg-gray-200 p-2 rounded-full mx-2 w-auto">
-                  {new Date(date)?.toDateString() === new Date()?.toDateString()
-                    ? "Today"
-                    : new Date(date)?.toDateString() ===
-                      new Date(Date.now() - 86400000)?.toDateString()
-                    ? "Yesterday"
-                    : date}
+        {messageLoading && (
+          <div className="w-full col-span-4 h-[80vh] flex items-center justify-center">
+            <Loader />
+          </div>
+        )}
+        {!messageLoading && messages?.length > 0 ? (
+          <>
+            <div className="flex flex-col mt-5 h-full overflow-y-auto">
+              {Object.keys(groupedMessages)?.map((date, idx) => (
+                <div key={idx}>
+                  <div className="flex items-center justify-center my-2">
+                    <div className="text-center text-xs text-gray-800 bg-gray-200 p-2 rounded-full mx-2 w-auto">
+                      {new Date(date)?.toDateString() ===
+                      new Date()?.toDateString()
+                        ? "Today"
+                        : new Date(date)?.toDateString() ===
+                          new Date(Date.now() - 86400000)?.toDateString()
+                        ? "Yesterday"
+                        : date}
+                    </div>
+                  </div>
+                  {groupedMessages[date]?.map((message, index) => {
+                    return message?.senderId == Cookies.get("id") ? (
+                      <div className="flex justify-end mb-4">
+                        <div className="mr-2 py-3 px-4 bg-purple-500 rounded-bl-3xl rounded-tl-3xl rounded-br-3xl text-white">
+                          {message?.message}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex justify-start mb-4">
+                        <div className="ml-2 py-3 px-4 bg-gray-300 rounded-bl-3xl rounded-tr-3xl rounded-br-3xl text-gray-800">
+                          {message?.message}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              </div>
-              {groupedMessages[date]?.map((message, index) => {
-                return message?.senderId == Cookies.get("id") ? (
-                  <div className="flex justify-end mb-4">
-                    <div className="mr-2 py-3 px-4 bg-purple-500 rounded-bl-3xl rounded-tl-3xl rounded-br-3xl text-white">
-                      {message?.message}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex justify-start mb-4">
-                    <div className="ml-2 py-3 px-4 bg-gray-300 rounded-bl-3xl rounded-tr-3xl rounded-br-3xl text-gray-800">
-                      {message?.message}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+              ))}
 
-          <div ref={messageEndRef} />
-        </div>
+              <div ref={messageEndRef} />
+            </div>
+          </>
+        ) : (
+          !messageLoading && (
+            <div className="w-full col-span-3 h-[80vh] flex items-center justify-center">
+              <img src="/no-data.jpg" alt="" className="h-96" />
+            </div>
+          )
+        )}
+
         <form
           onSubmit={(e) => {
             sendMessage(chatRoom, input, e);
@@ -439,38 +456,46 @@ export const Chats = () => {
           </button>
         </div>
         <div className="w-full h-auto grid grid-cols-1 gap-0">
-          {filteredData?.map((user, index) => {
-            return (
-              <div
-                key={index}
-                onClick={() => setChatRoom(user?.id)}
-                className={`w-full h-20 hover:bg-purple-500/[0.2] ${
-                  user?.id == chatRoom ? "bg-purple-500/[0.2]" : "bg-white"
-                } cursor-pointer border-b px-3 hidden lg:flex justify-start items-center gap-2`}
-              >
-                <span className="w-auto h-auto relative">
-                  <img
-                    src={
-                      user?.profilePicture
-                        ? user?.profilePicture
-                        : `https://eu.ui-avatars.com/api/?name=${user?.name}&size=250`
-                    }
-                    className="w-10 h-10 rounded-full shadow-sm"
-                  />
-                  {/* <span className="w-3 h-3 rounded-full bg-green-500 shadow-md absolute bottom-0 right-0" /> */}
-                </span>
-                <div className="w-auto flex flex-col justify-start items-start">
-                  <h3 className="text-sm font-semibold">{user?.name}</h3>
-                  <h3 className="text-xs text-gray-700 font-semibold">
-                    {user?.email}
-                  </h3>
-                </div>
-                {/* <button className="w-16 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs ml-auto font-medium">
+          {filteredData?.length > 0 ? (
+            filteredData?.map((user, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => setChatRoom(user?.id)}
+                  className={`w-full h-20 hover:bg-purple-500/[0.2] ${
+                    user?.id == chatRoom ? "bg-purple-500/[0.2]" : "bg-white"
+                  } cursor-pointer border-b px-3 hidden lg:flex justify-start items-center gap-2`}
+                >
+                  <span className="w-auto h-auto relative">
+                    <img
+                      src={
+                        user?.profilePicture
+                          ? user?.profilePicture
+                          : `https://eu.ui-avatars.com/api/?name=${user?.name}&size=250`
+                      }
+                      className="w-10 h-10 rounded-full shadow-sm"
+                    />
+                    {/* <span className="w-3 h-3 rounded-full bg-green-500 shadow-md absolute bottom-0 right-0" /> */}
+                  </span>
+                  <div className="w-auto flex flex-col justify-start items-start">
+                    <h3 className="text-sm font-semibold">{user?.name}</h3>
+                    <h3 className="text-xs text-gray-700 font-semibold">
+                      {user?.email}
+                    </h3>
+                  </div>
+                  {/* <button className="w-16 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs ml-auto font-medium">
             Delete
           </button> */}
-              </div>
-            );
-          })}
+                </div>
+              );
+            })
+          ) : (
+            <div className="w-full h-full flex justify-center items-center">
+              <h3 className="text-md font-bold text-gray-500">
+                No such user onboarded!
+              </h3>
+            </div>
+          )}
         </div>
       </div>
     </div>

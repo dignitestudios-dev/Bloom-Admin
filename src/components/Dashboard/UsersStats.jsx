@@ -7,7 +7,7 @@ const UsersStats = ({ data }) => {
       <div className="w-full h-auto flex justify-between items-start">
         <div className="w-auto h-auto flex flex-col gap-2 justify-start  items-start">
           <p className="text-[#5b5b5b] text-sm font-medium">Total User</p>
-          <h1 className="text-3xl font-bold">{data?.allusers}</h1>
+          <h1 className="text-3xl font-bold">{data?.users}</h1>
         </div>
         <img src={UserStatsIcon} alt="user_stats" />
       </div>
