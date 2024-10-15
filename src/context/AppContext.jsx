@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
-  const baseUrl = "https://backend.thebloom.co"; //SF
+  const baseUrl = "https://backend.thebloom.co";
   // const baseUrl = "http://192.168.100.65:5000"; // CITS
   const push = useNavigate();
   const [activeLink, setActiveLink] = useState("Dashboard");
