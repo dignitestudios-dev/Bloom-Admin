@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { AppContext } from "../../../context/AppContext";
 import TextPostCard from "../../../components/categories/TextPostCard";
+import Loader from "../../../components/global/Loader";
 
 const TextPost = ({ id }) => {
   const { error, setError, baseUrl } = useContext(AppContext);
