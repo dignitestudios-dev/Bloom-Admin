@@ -50,10 +50,7 @@ const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
       >
         {loading ? <GoKebabHorizontal /> : <MdDeleteOutline />}
       </button>
-      <a
-        href=""
-        class="c-card block bg-white border rounded-lg overflow-hidden"
-      >
+      <div class="c-card block bg-white border rounded-lg overflow-hidden">
         <div class="relative pb-48 overflow-hidden">
           <img
             class="absolute inset-0 h-full w-full object-cover"
@@ -124,7 +121,7 @@ const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
             </span>
           </button>
         </div>
-      </a>
+      </div>
     </div>
   );
 };
