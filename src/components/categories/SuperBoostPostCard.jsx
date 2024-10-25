@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { GoKebabHorizontal } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
+import DeletionModal from "./DeletionModal";
 
 const SuperBoostPostCard = ({ post, categoryId, setUpdate }) => {
   const { error, setError, baseUrl, success, setSuccess } =
@@ -29,10 +30,18 @@ const SuperBoostPostCard = ({ post, categoryId, setUpdate }) => {
         setError(error?.response?.data?.message);
       });
   };
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div className="w-full h-80 rounded-2xl group  relative">
+      <DeletionModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        loading={loading}
+        action={() => deletePost(post?.id, post?.categoryId)}
+      />
       <button
-        onClick={() => deletePost(post?.id, post?.categoryId)}
+        onClick={() => setShowModal(true)}
         className="w-8 h-8 rounded-full bg-purple-600 z-50 text-white text-md flex items-center justify-center absolute top-2 right-2"
       >
         {loading ? <GoKebabHorizontal /> : <MdDeleteOutline />}

@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { GoKebabHorizontal } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
+import DeletionModal from "./DeletionModal";
 
 const EventsCard = ({ post, setUpdate, categoryId }) => {
   console.log(post);
@@ -65,21 +66,29 @@ const EventsCard = ({ post, setUpdate, categoryId }) => {
         setError(error?.response?.data?.message);
       });
   };
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div class="flex flex-col w-full bg-white rounded-3xl relative shadow-lg ">
+      <DeletionModal
+        showModal={showModal}
+        setShowModal={setShowModal}
+        loading={loading}
+        action={() => deletePost(post?._id, post?.categoryId)}
+      />
       <button
-        onClick={() => deletePost(post?._id, post?.categoryId)}
+        onClick={() => setShowModal(true)}
         className="w-8 h-8 rounded-full bg-purple-600 z-50 text-white text-md flex items-center justify-center absolute top-2 right-2"
       >
         {loading ? <GoKebabHorizontal /> : <MdDeleteOutline />}
       </button>
       <div
-        class="w-full h-44 bg-top bg-cover rounded-t"
+        class="w-full h-44 bg-top bg-cover rounded-t-2xl"
         style={{
           backgroundImage: `url(${post?.image})`,
         }}
       ></div>
-      <div class="flex flex-col w-full md:flex-row">
+      <div class="flex h-52 flex-col w-full md:flex-row">
         <div class="flex flex-row justify-around p-4 font-bold leading-none text-white uppercase bg-purple-500 rounded-bl md:flex-col md:items-center md:justify-center md:w-1/4">
           <div class="md:text-xl">{month}</div>
           <div class="md:text-3xl">{date}</div>
