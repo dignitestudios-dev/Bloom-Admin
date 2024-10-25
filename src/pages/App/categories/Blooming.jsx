@@ -18,7 +18,7 @@ const Blooming = ({ id }) => {
       Authorization: `Bearer ${Cookies.get("token")}`,
     };
     axios
-      .get(`${baseUrl}/api/blooming`, { headers })
+      .get(`${baseUrl}/api/adminBlooming`, { headers })
       .then((response) => {
         setPosts(response?.data?.data);
         setPostsLoading(false);

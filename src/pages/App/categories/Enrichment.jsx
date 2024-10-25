@@ -20,7 +20,7 @@ const Enrichment = ({ id }) => {
       Authorization: `Bearer ${Cookies.get("token")}`,
     };
     axios
-      .get(`${baseUrl}/api/enrichment`, { headers })
+      .get(`${baseUrl}/api/adminEnrichment`, { headers })
       .then((response) => {
         setPosts(response?.data?.data);
         setPostsLoading(false);

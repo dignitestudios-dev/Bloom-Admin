@@ -8,6 +8,7 @@ import DeletionModal from "./DeletionModal";
 
 const EventsCard = ({ post, setUpdate, categoryId }) => {
   console.log(post);
+  console.log(post);
   const [date, setDate] = useState(null);
   const [month, setMonth] = useState(null);
   const [time, setTime] = useState(null);

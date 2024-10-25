@@ -11,6 +11,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import DeletionModal from "./DeletionModal";
 
 const TextPostCard = ({ post, categoryId, setUpdate }) => {
+  console.log(post);
   const [viewAll, setViewAll] = useState(false);
   const { error, setError, baseUrl, success, setSuccess } =
     useContext(AppContext);
@@ -22,7 +23,7 @@ const TextPostCard = ({ post, categoryId, setUpdate }) => {
       Authorization: `Bearer ${Cookies.get("token")}`,
     };
     axios
-      .delete(`${baseUrl}/api/post/${categoryId}/${postId}`, {
+      .delete(`${baseUrl}/api/textpost/${categoryId}/${postId}`, {
         headers,
       })
       .then((response) => {
