@@ -55,7 +55,13 @@ const Blooming = ({ id }) => {
         )}
         {!postsLoading && posts?.length > 0
           ? posts?.map((post, index) => {
-              return <BloomingPostCard key={index} post={post} />;
+              return (
+                <BloomingPostCard
+                  key={index}
+                  post={post}
+                  setUpdate={setReload}
+                />
+              );
             })
           : !postsLoading && (
               <div className="w-full col-span-3 h-[90vh] flex items-center justify-center">

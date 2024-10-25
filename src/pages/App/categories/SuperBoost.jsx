@@ -54,7 +54,14 @@ const SuperBoost = ({ id }) => {
         )}
         {!postsLoading && posts?.length > 0
           ? posts?.map((post, index) => {
-              return <SuperBoostPostCard key={index} post={post} />;
+              return (
+                <SuperBoostPostCard
+                  key={index}
+                  post={post}
+                  setUpdate={setReload}
+                  categoryId={id}
+                />
+              );
             })
           : !postsLoading && (
               <div className="w-full col-span-3 h-[90vh] flex items-center justify-center">

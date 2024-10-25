@@ -1,13 +1,46 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { AppContext } from "../../context/AppContext";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { GoKebabHorizontal } from "react-icons/go";
+import { MdDeleteOutline } from "react-icons/md";
 
-const BooksOfTheMonthPostCard = ({ post }) => {
+const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
   function formatDate(isoDate) {
     const date = new Date(isoDate);
     const options = { month: "short", day: "numeric", year: "numeric" };
     return date.toLocaleDateString("en-US", options).replace(",", "");
   }
+
+  const { error, setError, baseUrl, success, setSuccess } =
+    useContext(AppContext);
+
+  const [loading, setLoading] = useState(false);
+  const deletePost = (postId, categoryId) => {
+    setLoading(true);
+    const headers = {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    axios
+      .delete(`${baseUrl}/api/book/${categoryId}/${postId}`, { headers })
+      .then((response) => {
+        setUpdate((prev) => !prev);
+        setLoading(false);
+        setSuccess("Post deleted successfully.");
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error?.response?.data?.message);
+      });
+  };
   return (
-    <div class="w-full  ">
+    <div class="w-full  relative">
+      <button
+        onClick={() => deletePost(post?._id, post?.categoryId)}
+        className="w-8 h-8 rounded-full bg-purple-600 z-50 text-white text-md flex items-center justify-center absolute top-2 right-2"
+      >
+        {loading ? <GoKebabHorizontal /> : <MdDeleteOutline />}
+      </button>
       <a
         href=""
         class="c-card block bg-white border rounded-lg overflow-hidden"

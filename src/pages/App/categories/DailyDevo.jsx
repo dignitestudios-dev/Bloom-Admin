@@ -56,7 +56,7 @@ const DailyDevo = ({ id }) => {
         )}
         {!postsLoading && posts?.length > 0
           ? posts?.map((post) => {
-              return <DailyDevoPostCard post={post} />;
+              return <DailyDevoPostCard post={post} setUpdate={setReload} />;
             })
           : !postsLoading && (
               <div className="w-full col-span-3 h-[90vh] flex items-center justify-center">

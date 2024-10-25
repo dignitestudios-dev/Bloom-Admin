@@ -1,13 +1,45 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { AiFillLike } from "react-icons/ai";
 import { SlLike } from "react-icons/sl";
 import { FaRegCommentDots } from "react-icons/fa";
 import { LiaCommentDots } from "react-icons/lia";
+import { AppContext } from "../../context/AppContext";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { GoKebabHorizontal } from "react-icons/go";
+import { MdDeleteOutline } from "react-icons/md";
 
-const DailyDevoPostCard = ({ post }) => {
+const DailyDevoPostCard = ({ post, setUpdate }) => {
   const [viewAll, setViewAll] = useState(false);
+  const { error, setError, baseUrl, success, setSuccess } =
+    useContext(AppContext);
+
+  const [loading, setLoading] = useState(false);
+  const deletePost = (postId, categoryId) => {
+    setLoading(true);
+    const headers = {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    axios
+      .delete(`${baseUrl}/api/dailyDevo/${categoryId}/${postId}`, { headers })
+      .then((response) => {
+        setUpdate((prev) => !prev);
+        setLoading(false);
+        setSuccess("Post deleted successfully.");
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error?.response?.data?.message);
+      });
+  };
   return (
-    <div class="bg-white w-full rounded-md border h-auto py-3 px-3 ">
+    <div class="bg-white w-full rounded-md border h-auto py-3 px-3 relative">
+      <button
+        onClick={() => deletePost(post?._id, post?.categoryId)}
+        className="w-8 h-8 rounded-full bg-purple-600 z-50 text-white text-md flex items-center justify-center absolute top-2 right-2"
+      >
+        {loading ? <GoKebabHorizontal /> : <MdDeleteOutline />}
+      </button>
       <div className="w-full h-64 bg-gray-200 rounded-md">
         <img
           src={

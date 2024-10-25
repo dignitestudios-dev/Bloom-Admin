@@ -1,21 +1,56 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { AppContext } from "../../context/AppContext";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { GoKebabHorizontal } from "react-icons/go";
+import { MdDeleteOutline } from "react-icons/md";
 
-const SuperBoostPostCard = ({ post }) => {
+const SuperBoostPostCard = ({ post, categoryId, setUpdate }) => {
+  const { error, setError, baseUrl, success, setSuccess } =
+    useContext(AppContext);
+
+  const [loading, setLoading] = useState(false);
+  const deletePost = (postId) => {
+    setLoading(true);
+    const headers = {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    axios
+      .delete(`${baseUrl}/api/superBoost/${categoryId}/${postId}`, {
+        headers,
+      })
+      .then((response) => {
+        setUpdate((prev) => !prev);
+        setLoading(false);
+        setSuccess("Post deleted successfully.");
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error?.response?.data?.message);
+      });
+  };
   return (
-    <div className="w-full h-80 rounded-2xl relative">
+    <div className="w-full h-80 rounded-2xl group  relative">
+      <button
+        onClick={() => deletePost(post?.id, post?.categoryId)}
+        className="w-8 h-8 rounded-full bg-purple-600 z-50 text-white text-md flex items-center justify-center absolute top-2 right-2"
+      >
+        {loading ? <GoKebabHorizontal /> : <MdDeleteOutline />}
+      </button>
+      <span className="w-full h-full rounded-2xl group-hover:scale-0 transition-all duration-150 z-20 bg-black/20  absolute top-0 left-0"></span>
       <img
         src={post?.content}
         alt="super-boost-post-card"
-        className="w-full h-full rounded-2xl absolute top-0 left-0"
+        className="w-full h-full rounded-2xl  absolute top-0 left-0"
       />
 
-      <h2 className="text-white text-xs font-medium absolute top-3 left-3">
+      <h2 className="text-white z-30 text-xs font-medium absolute top-3 left-3">
         Jul 16, 2024
       </h2>
 
       <div className="w-full px-3 absolute bottom-3 left-0 h-auto flex flex-col gap-[1px]  ">
-        <h2 className="text-white text-md font-semibold">{post?.title}</h2>
-        <p className="text-white text-xs font-normal leading-4 tracking-tighter">
+        <h2 className="text-white z-30 text-md font-bold">{post?.title}</h2>
+        <p className="text-white z-30 text-xs font-normal leading-4 tracking-tighter">
           {post?.description?.length > 200
             ? post?.description?.slice(0, 200) + "..."
             : post?.description}

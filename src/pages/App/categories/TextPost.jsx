@@ -57,7 +57,13 @@ const TextPost = ({ id }) => {
         )}
         {!postsLoading && posts?.length > 0
           ? posts?.map((post) => {
-              return <TextPostCard post={post} />;
+              return (
+                <TextPostCard
+                  post={post}
+                  setUpdate={setReload}
+                  categoryId={id}
+                />
+              );
             })
           : !postsLoading && (
               <div className="w-full col-span-2 h-[90vh] flex items-center justify-center">

@@ -1,8 +1,40 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { AppContext } from "../../context/AppContext";
+import { MdDeleteOutline } from "react-icons/md";
+import { GoKebabHorizontal } from "react-icons/go";
 
-const BloomingPostCard = ({ post }) => {
+const BloomingPostCard = ({ post, setUpdate }) => {
+  const { error, setError, baseUrl, success, setSuccess } =
+    useContext(AppContext);
+
+  const [loading, setLoading] = useState(false);
+  const deletePost = (postId, categoryId) => {
+    setLoading(true);
+    const headers = {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    axios
+      .delete(`${baseUrl}/api/blooming/${categoryId}/${postId}`, { headers })
+      .then((response) => {
+        setUpdate((prev) => !prev);
+        setLoading(false);
+        setSuccess("Post deleted successfully.");
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error?.response?.data?.message);
+      });
+  };
   return (
-    <div className="w-full h-80 rounded-2xl relative">
+    <div className="w-full h-80  rounded-2xl relative">
+      <button
+        onClick={() => deletePost(post?._id, post?.categoryId)}
+        className="w-8 h-8 rounded-full bg-purple-600 z-50 text-white text-md flex items-center justify-center absolute top-2 right-2"
+      >
+        {loading ? <GoKebabHorizontal /> : <MdDeleteOutline />}
+      </button>
       <img
         src={post?.image}
         alt="super-boost-post-card"

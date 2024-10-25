@@ -56,7 +56,14 @@ const Enrichment = ({ id }) => {
         )}
         {!postsLoading && posts?.length > 0
           ? posts?.map((post, index) => {
-              return <EnrichmentPostCard post={post} key={index} />;
+              return (
+                <EnrichmentPostCard
+                  post={post}
+                  key={index}
+                  setUpdate={setReload}
+                  categoryId={id}
+                />
+              );
             })
           : !postsLoading && (
               <div className="w-full col-span-3 h-[90vh] flex items-center justify-center">

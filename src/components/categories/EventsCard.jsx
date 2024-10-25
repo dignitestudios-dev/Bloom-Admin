@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AppContext } from "../../context/AppContext";
+import axios from "axios";
+import Cookies from "js-cookie";
+import { GoKebabHorizontal } from "react-icons/go";
+import { MdDeleteOutline } from "react-icons/md";
 
-const EventsCard = ({ post }) => {
+const EventsCard = ({ post, setUpdate, categoryId }) => {
+  console.log(post);
   const [date, setDate] = useState(null);
   const [month, setMonth] = useState(null);
   const [time, setTime] = useState(null);
@@ -35,8 +41,38 @@ const EventsCard = ({ post }) => {
   useEffect(() => {
     formatISODate(post?.createdAt);
   }, []);
+
+  const { error, setError, baseUrl, success, setSuccess } =
+    useContext(AppContext);
+
+  const [loading, setLoading] = useState(false);
+  const deletePost = (postId) => {
+    setLoading(true);
+    const headers = {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    axios
+      .delete(`${baseUrl}/api/events/${categoryId}/${postId}`, {
+        headers,
+      })
+      .then((response) => {
+        setUpdate((prev) => !prev);
+        setLoading(false);
+        setSuccess("Post deleted successfully.");
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error?.response?.data?.message);
+      });
+  };
   return (
-    <div class="flex flex-col w-full bg-white rounded-3xl shadow-lg ">
+    <div class="flex flex-col w-full bg-white rounded-3xl relative shadow-lg ">
+      <button
+        onClick={() => deletePost(post?._id, post?.categoryId)}
+        className="w-8 h-8 rounded-full bg-purple-600 z-50 text-white text-md flex items-center justify-center absolute top-2 right-2"
+      >
+        {loading ? <GoKebabHorizontal /> : <MdDeleteOutline />}
+      </button>
       <div
         class="w-full h-44 bg-top bg-cover rounded-t"
         style={{

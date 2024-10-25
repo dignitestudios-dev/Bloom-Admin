@@ -1,14 +1,48 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { FaPlay } from "react-icons/fa";
+import { AppContext } from "../../context/AppContext";
+import Cookies from "js-cookie";
+import axios from "axios";
+import { GoKebabHorizontal } from "react-icons/go";
+import { MdDeleteOutline } from "react-icons/md";
 
-const BrittanyTalksPostCard = ({ post }) => {
+const BrittanyTalksPostCard = ({ post, setUpdate, categoryId }) => {
   function formatDate(isoDate) {
     const date = new Date(isoDate);
     const options = { month: "short", day: "numeric", year: "numeric" };
     return date.toLocaleDateString("en-US", options).replace(",", "");
   }
+  const { error, setError, baseUrl, success, setSuccess } =
+    useContext(AppContext);
+
+  const [loading, setLoading] = useState(false);
+  const deletePost = (postId) => {
+    setLoading(true);
+    const headers = {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    axios
+      .delete(`${baseUrl}/api/brittanyTalk/${categoryId}/${postId}`, {
+        headers,
+      })
+      .then((response) => {
+        setUpdate((prev) => !prev);
+        setLoading(false);
+        setSuccess("Post deleted successfully.");
+      })
+      .catch((error) => {
+        setLoading(false);
+        setError(error?.response?.data?.message);
+      });
+  };
   return (
-    <button className="w-full h-24 rounded-2xl bg-gray-50 px-2 flex justify-start items-center gap-3">
+    <button className="w-full h-24 relative rounded-2xl bg-gray-50 px-2 flex justify-start items-center gap-3">
+      <button
+        onClick={() => deletePost(post?._id, post?.categoryId)}
+        className="w-8 h-8 rounded-full bg-purple-600 z-50 text-white text-md flex items-center justify-center absolute bottom-2 right-2"
+      >
+        {loading ? <GoKebabHorizontal /> : <MdDeleteOutline />}
+      </button>
       <div className="w-20 h-20 relative">
         <img
           src={post?.videoCover}
