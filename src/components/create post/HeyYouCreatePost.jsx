@@ -27,7 +27,16 @@ const HeyYouCreatePost = ({ id }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+    const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+
     if (file) {
+      if (file.size > maxSize) {
+        setImageError("Max image size is 2 MB");
+        setImageBase(null); // Clear any existing image base
+        setImages(null); // Clear any existing image file
+        return; // Exit function
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setImageBase(reader.result);
@@ -128,7 +137,7 @@ const HeyYouCreatePost = ({ id }) => {
       <div className="w-full h-32 rounded-2xl flex justify-center items-center text-3xl font-bold bg text-white">
         Hey You
       </div>
-      <div className="w-full flex flex-col  border    rounded-2xl gap-2 justify-start items-start">
+      <div className="w-full flex flex-col      rounded-2xl gap-2 justify-start items-start">
         <div
           onClick={handleImage}
           className={`w-full h-40 rounded-2xl cursor-pointer bg-gray-50 flex flex-col gap-1 justify-center items-center ${
@@ -153,7 +162,7 @@ const HeyYouCreatePost = ({ id }) => {
             <div className="w-full h-full flex flex-col gap-2 justify-center items-center">
               <CiImageOn className="text-3xl text-gray-600 font-medium" />
               <span className="text-xs font-medium text-gray-600">
-                Please provide the Image in jpg or png format.
+                Please provide the Image in png format. Max Image size is 2 MB
               </span>
             </div>
           )}

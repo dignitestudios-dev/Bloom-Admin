@@ -29,11 +29,43 @@ const BooksOfMonthCreatePost = ({ id }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageBase(reader.result);
+        const img = new Image();
+        img.src = reader.result;
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+
+          const targetWidth = 425;
+          const targetHeight = 1200;
+
+          // Set canvas dimensions
+          canvas.width = targetWidth;
+          canvas.height = targetHeight;
+
+          // Check if the image is smaller than 450x500 pixels
+          if (img.width < 450 || img.height < 700) {
+            setImageError(
+              "Image must be atleast 450px in width and 700px in height."
+            );
+            setImages(null);
+            setImageBase(null);
+            return;
+          }
+
+          // Draw the image on the canvas
+          ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+          canvas.toBlob((blob) => {
+            if (blob) {
+              setImageError(false);
+              setImages(blob);
+            }
+          });
+
+          const resizedImageDataUrl = canvas.toDataURL("image/jpeg", 1.0);
+          setImageBase(resizedImageDataUrl);
+        };
       };
       reader.readAsDataURL(file);
-      setImageError(false);
-      setImages(file);
     }
   };
 
@@ -100,8 +132,8 @@ const BooksOfMonthCreatePost = ({ id }) => {
       <div className="w-full h-32 rounded-2xl flex justify-center items-center text-3xl font-bold bg text-white">
         Books of the month
       </div>
-      <div className="w-full flex flex-col  border    rounded-2xl gap-2 justify-start items-start">
-        <div className="w-full flex flex-col  border    rounded-2xl gap-2 justify-start items-start">
+      <div className="w-full flex flex-col      rounded-2xl gap-2 justify-start items-start">
+        <div className="w-full flex flex-col      rounded-2xl gap-2 justify-start items-start">
           <div
             onClick={handleImage}
             className={`w-full h-40 rounded-2xl cursor-pointer bg-gray-50 flex flex-col gap-1 justify-center items-center ${
