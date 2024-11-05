@@ -57,25 +57,31 @@ const BusinessMvr = () => {
             Comments
           </h3>
         </div>
-        {data?.map((item, key) => {
-          return (
-            <div
-              key={key}
-              className="w-full px-3 h-12 border-t grid grid-cols-5 justify-start items-center "
-            >
-              <div className="w-6 h-6 rounded-full bg-purple-500/50 border-purple-500 border"></div>
-              <h3 className="text-md font-bold col-span-2 text-gray-800  flex items-center justify-start">
-                {item?.categoryName}
-              </h3>
-              <h3 className="text-md font-medium text-gray-500  flex items-center justify-center">
-                {item?.LikesCount}
-              </h3>
-              <h3 className="text-md font-medium text-gray-500  flex items-center justify-center">
-                {item?.CommentsCount}
-              </h3>
-            </div>
-          );
-        })}
+        {data?.length > 0 ? (
+          data?.map((item, key) => {
+            return (
+              <div
+                key={key}
+                className="w-full px-3 h-12 border-t grid grid-cols-5 justify-start items-center "
+              >
+                <div className="w-6 h-6 rounded-full bg-purple-500/50 border-purple-500 border"></div>
+                <h3 className="text-md font-bold col-span-2 text-gray-800  flex items-center justify-start">
+                  {item?.categoryName}
+                </h3>
+                <h3 className="text-md font-medium text-gray-500  flex items-center justify-center">
+                  {item?.LikesCount}
+                </h3>
+                <h3 className="text-md font-medium text-gray-500  flex items-center justify-center">
+                  {item?.CommentsCount}
+                </h3>
+              </div>
+            );
+          })
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <img src="/no-data.jpg" alt="" className="h-24" />
+          </div>
+        )}
       </div>
     </div>
   );
