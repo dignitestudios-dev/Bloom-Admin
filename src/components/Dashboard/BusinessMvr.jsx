@@ -44,7 +44,7 @@ const BusinessMvr = () => {
     <div className="w-full p-4 h-[32rem] flex flex-col justify-start items-start col-span-2 shadow rounded-2xl shadow-gray-300">
       {/* <h2 className="text-xl font-bold text-gray-900">Category Statistics</h2> */}
 
-      <div className="w-full border rounded-xl h-auto flex flex-col justify-start items-start">
+      <div className="w-full  rounded-xl h-auto flex flex-col justify-start items-start">
         <div className="w-full px-3 h-12  grid grid-cols-5 justify-start items-center gap-4">
           <div className="w-6 h-6 rounded-full"></div>
           <h3 className="text-md font-bold col-span-2 text-gray-800  flex items-center justify-start">
@@ -78,7 +78,7 @@ const BusinessMvr = () => {
             );
           })
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="w-full h-64 flex items-center justify-center">
             <img src="/no-data.jpg" alt="" className="h-24" />
           </div>
         )}
