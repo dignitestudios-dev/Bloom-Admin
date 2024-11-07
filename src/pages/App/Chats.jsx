@@ -18,6 +18,7 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import Loader from "../../components/global/Loader";
+import { useNavigate } from "react-router-dom";
 
 export const Chats = () => {
   const { error, setError, baseUrl } = useContext(AppContext);
@@ -25,6 +26,7 @@ export const Chats = () => {
   const [users, setUsers] = useState([]);
   const [reload, setReload] = useState(false);
   const [chatRoom, setChatRoom] = useState();
+  const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
 
@@ -42,6 +44,10 @@ export const Chats = () => {
       })
       .catch((error) => {
         setUserLoading(false);
+        if (error?.response?.status == 401) {
+          Cookies.remove("token");
+          navigate("/login");
+        }
         setError(error?.response?.data?.message);
       });
   };

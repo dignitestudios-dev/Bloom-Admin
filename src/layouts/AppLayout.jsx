@@ -6,13 +6,14 @@ import Cookies from "js-cookie";
 import { AppContext } from "../context/AppContext";
 import Success from "../components/global/Success";
 import Error from "../components/global/Error";
+import { useNavigate } from "react-router-dom";
 
 const AppLayout = ({ page }) => {
   const { baseUrl, success, setSuccess, error, setError } =
     useContext(AppContext);
   const [profile, setProfile] = useState(null);
   const [profileLoading, setProfileLoading] = useState(false);
-
+  const navigate = useNavigate();
   const getProfile = () => {
     if (Cookies.get("token")) {
       const headers = {
@@ -32,7 +33,14 @@ const AppLayout = ({ page }) => {
         })
         .catch((error) => {
           setProfileLoading(false);
+          if (error?.response?.status == 401) {
+            Cookies.remove("token");
+            navigate("/login");
+          }
         });
+    } else {
+      Cookies.remove("token");
+      navigate("/login");
     }
   };
 

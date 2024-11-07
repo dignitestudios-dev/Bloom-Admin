@@ -51,6 +51,15 @@ const Login = () => {
       },
     });
 
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (token) {
+      navigate("Dashboard", "/dashboard");
+    } else {
+      return;
+    }
+  }, []);
+
   return (
     <div className="flex h-screen">
       {error && (

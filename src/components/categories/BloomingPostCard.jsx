@@ -5,10 +5,12 @@ import { AppContext } from "../../context/AppContext";
 import { MdDeleteOutline } from "react-icons/md";
 import { GoKebabHorizontal } from "react-icons/go";
 import DeletionModal from "./DeletionModal";
+import { useNavigate } from "react-router-dom";
 
 const BloomingPostCard = ({ post, setUpdate }) => {
   const { error, setError, baseUrl, success, setSuccess } =
     useContext(AppContext);
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const deletePost = (postId, categoryId) => {
@@ -25,6 +27,10 @@ const BloomingPostCard = ({ post, setUpdate }) => {
       })
       .catch((error) => {
         setLoading(false);
+        if (error?.response?.status == 401) {
+          Cookies.remove("token");
+          navigate("/login");
+        }
         setError(error?.response?.data?.message);
       });
   };

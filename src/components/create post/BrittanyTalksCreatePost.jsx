@@ -56,6 +56,16 @@ const BrittanyTalksCreatePost = ({ id }) => {
   const handleVideoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const maxSizeInMB = 300;
+      const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+
+      if (file.size > maxSizeInBytes) {
+        setVideoError("File size should be less than 300MB");
+        setVideo(null);
+        setVideoBase(null);
+        setVideoDuration(null);
+        return;
+      }
       const reader = new FileReader();
       reader.onloadend = () => {
         setVideoBase(reader.result);
@@ -145,7 +155,7 @@ const BrittanyTalksCreatePost = ({ id }) => {
             onClick={() =>
               document.getElementById("attraction-video-add").click()
             }
-            className="w-full h-40 rounded-2xl cursor-pointer bg-gray-50 flex flex-col gap-1 justify-center items-center"
+            className="w-full h-40 rounded-2xl cursor-pointer bg-gray-50  flex flex-col gap-1 justify-center items-center"
           >
             <input
               id="attraction-video-add"
@@ -154,7 +164,7 @@ const BrittanyTalksCreatePost = ({ id }) => {
               accept="video/mp4"
               onChange={handleVideoChange}
             />
-            <div className="w-full h-full flex flex-col justify-center items-center">
+            <div className="w-full h-full rounded-xl flex flex-col justify-center items-center">
               {videoBase ? (
                 <video controls className="w-full h-full object-contain">
                   <source src={videoBase} type="video/mp4" />
@@ -170,6 +180,11 @@ const BrittanyTalksCreatePost = ({ id }) => {
                 </>
               )}
             </div>
+            {videoError && (
+              <p className="text-red-700 mb-1 text-sm font-medium">
+                {videoError}
+              </p>
+            )}
           </div>
           <div className="w-full flex flex-col  rounded-2xl gap-2 justify-start items-start">
             <div

@@ -5,6 +5,7 @@ import axios from "axios";
 import { GoKebabHorizontal } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
 import DeletionModal from "./DeletionModal";
+import { useNavigate } from "react-router-dom";
 
 const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
   function formatDate(isoDate) {
@@ -12,6 +13,8 @@ const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
     const options = { month: "short", day: "numeric", year: "numeric" };
     return date.toLocaleDateString("en-US", options).replace(",", "");
   }
+
+  const navigate = useNavigate();
 
   const { error, setError, baseUrl, success, setSuccess } =
     useContext(AppContext);
@@ -31,6 +34,10 @@ const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
       })
       .catch((error) => {
         setLoading(false);
+        if (error?.response?.status == 401) {
+          Cookies.remove("token");
+          navigate("/login");
+        }
         setError(error?.response?.data?.message);
       });
   };
