@@ -29,43 +29,11 @@ const BooksOfMonthCreatePost = ({ id }) => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const img = new Image();
-        img.src = reader.result;
-        img.onload = () => {
-          const canvas = document.createElement("canvas");
-          const ctx = canvas.getContext("2d");
-
-          const targetWidth = 425;
-          const targetHeight = 1200;
-
-          // Set canvas dimensions
-          canvas.width = targetWidth;
-          canvas.height = targetHeight;
-
-          // Check if the image is smaller than 450x500 pixels
-          if (img.width < 450 || img.height < 700) {
-            setImageError(
-              "Image must be atleast 450px in width and 700px in height."
-            );
-            setImages(null);
-            setImageBase(null);
-            return;
-          }
-
-          // Draw the image on the canvas
-          ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
-          canvas.toBlob((blob) => {
-            if (blob) {
-              setImageError(false);
-              setImages(blob);
-            }
-          });
-
-          const resizedImageDataUrl = canvas.toDataURL("image/jpeg", 1.0);
-          setImageBase(resizedImageDataUrl);
-        };
+        setImageBase(reader.result);
       };
       reader.readAsDataURL(file);
+      setImageError(false);
+      setImages(file);
     }
   };
 
@@ -98,7 +66,7 @@ const BooksOfMonthCreatePost = ({ id }) => {
           formdata.append("title", values?.title?.trim());
           formdata.append("description", values?.description?.trim());
           formdata.append("author", values?.author?.trim());
-          formdata.append("price", parseInt(values?.price));
+          formdata.append("price", parseFloat(values?.price));
           formdata.append("image", images);
           formdata.append("categoryId", id);
 
@@ -229,11 +197,17 @@ const BooksOfMonthCreatePost = ({ id }) => {
             <PiCurrencyDollarBold />
           </span>
           <input
-            type="number"
+            type="text"
             name="price"
             id="price"
             value={values.price}
-            onChange={handleChange}
+            onChange={(e) => {
+              // Allow only numbers with optional decimal
+              const regex = /^[0-9]*[.,]?[0-9]*$/;
+              if (regex.test(e.target.value)) {
+                handleChange(e);
+              }
+            }}
             onBlur={handleBlur}
             placeholder="e.g. 240."
             className={`w-[95%] h-12 rounded-r-2xl  bg-gray-50 border outline-none focus-within:border-gray-400 px-4 ${
