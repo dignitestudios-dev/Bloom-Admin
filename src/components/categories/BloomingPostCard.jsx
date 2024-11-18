@@ -61,7 +61,7 @@ const BloomingPostCard = ({ post, setUpdate }) => {
         <h2 className="text-white text-md font-semibold">{post?.title}</h2>
 
         <div class="w-full flex justify-start items-center gap-3 ">
-          <button class="flex  rounded-lg  py-1 flex-row justify-start items-center w-auto space-x-2">
+          <span class="flex  rounded-lg  py-1 flex-row justify-start items-center w-auto space-x-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"
@@ -78,8 +78,8 @@ const BloomingPostCard = ({ post, setUpdate }) => {
             <span class="font-semibold text-sm text-white">
               {post?.likeCount}
             </span>
-          </button>
-          <button class="flex  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-2">
+          </span>
+          <span class="flex  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"
@@ -97,7 +97,7 @@ const BloomingPostCard = ({ post, setUpdate }) => {
               {" "}
               {post?.commentsCount}
             </span>
-          </button>
+          </span>
         </div>
       </div>
     </div>

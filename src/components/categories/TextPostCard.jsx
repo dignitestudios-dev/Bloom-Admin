@@ -56,11 +56,9 @@ const TextPostCard = ({ post, categoryId, setUpdate }) => {
         {post?.title}
       </span>
       <p className="w-[90%] text-sm font-normal text-gray-600 px-1">
-        {post?.description?.length > 200
-          ? post?.description?.slice(0, 200) + "..."
-          : post?.description}
+        {post?.description}
       </p>
-      <div class="w-full h-8 flex items-center absolute bottom-1 left-0 px-3 mt-2">
+      <div class="w-full h-8 flex items-center  mt-3">
         <div class="bg-blue-500 z-10 w-5 h-5 rounded-full flex items-center justify-center ">
           <svg
             class="w-3 h-3 fill-current text-white"

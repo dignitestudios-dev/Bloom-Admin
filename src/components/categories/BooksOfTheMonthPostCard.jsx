@@ -70,11 +70,7 @@ const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
                 Highlight
               </span> */}
           <h2 class="mt-2 mb-2  font-bold">{post?.title}</h2>
-          <p class="text-sm">
-            {post?.description?.length > 100
-              ? post?.description?.slice(0, 100) + "..."
-              : post?.description}
-          </p>
+          <p class="text-sm">{post?.description}</p>
           <div class="mt-3 flex items-center">
             <span class="text-sm font-semibold">$</span>&nbsp;
             <span class="font-bold text-xl">{post?.price}</span>&nbsp;
@@ -91,7 +87,7 @@ const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
           </span>
         </div>
         <div class="w-full px-5 my-2 flex justify-start items-center gap-3 ">
-          <button class="flex  rounded-lg  py-1 flex-row justify-start items-center w-auto space-x-1">
+          <span class="flex  rounded-lg  py-1 flex-row justify-start items-center w-auto space-x-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"
@@ -108,8 +104,8 @@ const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
             <span class="font-semibold text-sm text-[#1c1c1c]">
               {post?.likeCount}
             </span>
-          </button>
-          <button class="flex  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1">
+          </span>
+          <span class="flex  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"
@@ -126,7 +122,7 @@ const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
             <span class="font-semibold text-sm text-[#1c1c1c]">
               {post?.commentsCount}
             </span>
-          </button>
+          </span>
         </div>
       </div>
     </div>

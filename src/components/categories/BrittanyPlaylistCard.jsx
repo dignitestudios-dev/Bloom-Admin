@@ -39,7 +39,7 @@ const BrittanyPlaylistCard = ({ post }) => {
         </p>
       </div>
       <div class="w-full flex absolute bottom-1 left-2 justify-start items-center gap-3 ">
-        <button class="flex hover:bg-gray-50 rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1">
+        <span class="flex  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
@@ -56,8 +56,8 @@ const BrittanyPlaylistCard = ({ post }) => {
           <span class="font-semibold text-sm text-gray-600">
             {post?.likeCount}
           </span>
-        </button>
-        <button class="flex hover:bg-gray-50 rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1">
+        </span>
+        <span class="flex  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
@@ -74,7 +74,7 @@ const BrittanyPlaylistCard = ({ post }) => {
           <span class="font-semibold text-sm text-gray-600">
             {post?.commentsCount}
           </span>
-        </button>
+        </span>
       </div>
     </div>
   );

@@ -86,12 +86,7 @@ const DailyDevoPostCard = ({ post, setUpdate }) => {
 
         <div class="w-full flex justify-between">
           <p class="ml-1 text-gray-500">{post?.likeCount}</p>
-          <button
-            onClick={() => setViewAll((prev) => !prev)}
-            class="ml-1 text-gray-500 hover:underline"
-          >
-            {post?.commentsCount} comment
-          </button>
+          <span class="ml-1 text-gray-500 ">{post?.commentsCount} comment</span>
         </div>
       </div>
 

@@ -129,7 +129,7 @@ const Categories = () => {
         className="hidden"
         id="image"
       />
-      <div className="col-span-5 border-r p-3 h-full overflow-y-auto flex flex-col gap-4 justify-start items-start">
+      <div className="col-span-5 border-r py-3 pr-3 pl-0 h-full overflow-y-auto flex flex-col gap-4 justify-start items-start">
         {currentCategory == "Daily Devo" ? (
           <DailyDevo id={categoryId} />
         ) : currentCategory == "Super Boost" ? (
@@ -150,7 +150,7 @@ const Categories = () => {
           currentCategory == "Events" && <Events id={categoryId} />
         )}
       </div>
-      <div className="w-full h-auto overflow-y-auto  col-span-2 grid grid-cols-1  pl-3 py-3 justify-start items-start gap-2">
+      <div className="w-full h-auto max-h-full overflow-y-hidden  col-span-2 grid grid-cols-1  pl-3 py-3 justify-start items-start gap-2">
         {categoriesLoading
           ? arr.map((item) => {
               return (

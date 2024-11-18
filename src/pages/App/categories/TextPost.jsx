@@ -36,7 +36,7 @@ const TextPost = ({ id }) => {
   }, [reload, id]);
 
   return (
-    <div className="w-full flex flex-col justify-start items-start gap-4">
+    <div className="w-full flex  flex-col justify-start items-start gap-4">
       {/* <div className="w-full h-12 flex justify-start items-center gap-2  relative">
         <input
           type="text"
@@ -49,9 +49,9 @@ const TextPost = ({ id }) => {
           Search
         </button>
       </div> */}
-      <div className="w-full h-full grid grid-cols-2 gap-4 justify-start items-start">
+      <div className="w-full h-full grid grid-cols-1 gap-4 justify-start items-start">
         {postsLoading && (
-          <div className="w-full col-span-2 h-[90vh] flex items-center justify-center">
+          <div className="w-full col-span-1 h-[90vh] flex items-center justify-center">
             <Loader />
           </div>
         )}
@@ -66,7 +66,7 @@ const TextPost = ({ id }) => {
               );
             })
           : !postsLoading && (
-              <div className="w-full col-span-2 h-[90vh] flex items-center justify-center">
+              <div className="w-full col-span-1 h-[90vh] flex items-center justify-center">
                 <img src="/no-data.jpg" alt="" className="h-96" />
               </div>
             )}
