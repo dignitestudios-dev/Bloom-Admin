@@ -12,7 +12,7 @@ const SidebarLink = ({ data }) => {
       className={`w-full rounded-r-full h-12 transition-all duration-300 flex justify-start items-center gap-2 px-4 ${
         activeLink === data?.title
           ? "bg text-[#fff]"
-          : "bg-gray-50 text-[#191919]"
+          : "bg-purple-500/10 text-[#191919]"
       }  font-medium text-xl`}
     >
       <span>{data?.icon}</span>

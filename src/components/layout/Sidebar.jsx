@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 const Sidebar = () => {
   const { navigate } = useContext(AppContext);
   return (
-    <div className="w-[270px] h-full border-r pr-2 overflow-y-auto flex flex-col items-center justify-start">
+    <div className="w-[270px] h-full border-r rounded-r-3xl pr-2 overflow-y-auto flex flex-col items-center justify-start">
       <img src={Logo} alt="logo" className="w-[40%]" />
       <div className="w-full h-auto flex flex-col justify-start items-start gap-2">
         {sidebar?.map((data) => {
@@ -20,7 +20,7 @@ const Sidebar = () => {
             Cookies.remove("token");
             navigate("Login", "/login");
           }}
-          className={`w-full rounded-r-full h-12 transition-all duration-300 flex justify-start items-center gap-2 px-4 bg-gray-50 text-[#191919] hover:bg-purple-500 hover:text-white font-medium text-xl`}
+          className={`w-full rounded-r-full h-12 transition-all duration-300 flex justify-start items-center gap-2 px-4 bg-purple-500/10 text-[#191919] hover:bg-purple-500 hover:text-white font-medium text-xl`}
         >
           <span>
             <CiLogout />

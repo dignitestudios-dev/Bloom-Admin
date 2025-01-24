@@ -21,6 +21,7 @@ export const AppContextProvider = ({ children }) => {
         error,
         setError,
         activeLink,
+        setActiveLink,
         success,
         setSuccess,
       }}

@@ -6,7 +6,7 @@ import { AppContext } from "../../../context/AppContext";
 import TextPostCard from "../../../components/categories/TextPostCard";
 import Loader from "../../../components/global/Loader";
 
-const TextPost = ({ id }) => {
+const TextPost = ({ id, setPostId, setCommentOpen }) => {
   const { error, setError, baseUrl } = useContext(AppContext);
   const [postsLoading, setPostsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -62,6 +62,8 @@ const TextPost = ({ id }) => {
                   post={post}
                   setUpdate={setReload}
                   categoryId={id}
+                  setPostId={setPostId}
+                  setCommentOpen={setCommentOpen}
                 />
               );
             })

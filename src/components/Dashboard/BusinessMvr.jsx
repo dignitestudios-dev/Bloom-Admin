@@ -57,7 +57,11 @@ const BusinessMvr = () => {
             Comments
           </h3>
         </div>
-        {data?.length > 0 ? (
+        {dataLoading ? (
+          <div className="w-full h-64 flex items-center justify-center">
+            <span className="text-3xl">Loading...</span>
+          </div>
+        ) : data?.length > 0 ? (
           data?.map((item, key) => {
             return (
               <div
@@ -79,7 +83,7 @@ const BusinessMvr = () => {
           })
         ) : (
           <div className="w-full h-64 flex items-center justify-center">
-            <img src="/no-data.jpg" alt="" className="h-24" />
+            <img src="/no-data.jpg" alt="" className="h-68" />
           </div>
         )}
       </div>

@@ -10,57 +10,42 @@ import Cookies from "js-cookie";
 import Loader from "../../components/global/Loader";
 import { useNavigate } from "react-router-dom";
 import { notification } from "../../data/create/notification";
+import DeleteComment from "../../components/categories/DeleteComment";
+import DeleteReport from "../../components/categories/DeleteReport";
 
-const Notifications = () => {
+const Reports = () => {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const { error, setError, baseUrl } = useContext(AppContext);
-  const [notificationLoading, setNotificationLoading] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+  const { error, setError, baseUrl, setSuccess } = useContext(AppContext);
+  const [reportLoading, setReportLoading] = useState(false);
+  const [reports, setReports] = useState([]);
   const [reload, setReload] = useState(false);
   const [activeTab, setActiveTab] = useState("admin");
 
   const [search, setSearch] = useState("");
 
-  const getAdminNotifications = () => {
-    setNotificationLoading(true);
+  const getReports = () => {
+    setReportLoading(true);
     const headers = {
       Authorization: `Bearer ${Cookies.get("token")}`,
     };
     axios
-      .get(`${baseUrl}/api/2/notifications/admin`, { headers })
+      .get(`${baseUrl}/api/reports`, { headers })
       .then((response) => {
-        setNotifications(response?.data?.data?.reverse());
-        setNotificationLoading(false);
+        setReports(response?.data?.data);
+        setReportLoading(false);
       })
       .catch((error) => {
-        setNotificationLoading(false);
-        setError(error?.response?.data?.message);
-      });
-  };
-
-  const getUserNotifications = () => {
-    setNotificationLoading(true);
-    const headers = {
-      Authorization: `Bearer ${Cookies.get("token")}`,
-    };
-    axios
-      .get(`${baseUrl}/api/2/notifications/admin/get`, { headers })
-      .then((response) => {
-        setNotifications(response?.data?.data?.reverse());
-        setNotificationLoading(false);
-      })
-      .catch((error) => {
-        setNotificationLoading(false);
+        setReportLoading(false);
         setError(error?.response?.data?.message);
       });
   };
 
   useEffect(() => {
-    activeTab == "admin" ? getAdminNotifications() : getUserNotifications();
-  }, [reload, activeTab]);
+    getReports();
+  }, [reload]);
 
-  const filteredData = notifications.filter((notification) =>
-    notification?.title?.toLowerCase().includes(search?.toLowerCase())
+  const filteredData = reports.filter((notification) =>
+    notification?.reporter?.name?.toLowerCase().includes(search?.toLowerCase())
   );
 
   const { setActiveLink } = useContext(AppContext);
@@ -86,48 +71,33 @@ const Notifications = () => {
     }
   }
 
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  const onConfirm = () => {
+    setDeleteLoading(true);
+    const headers = {
+      Authorization: `Bearer ${Cookies.get("token")}`,
+    };
+    axios
+      .delete(`${baseUrl}/api/reports/${deleteId}`, { headers })
+      .then((response) => {
+        setSuccess("Comment deleted successfully.");
+        setReload((prev) => !prev);
+        setDeleteOpen(false);
+        setDeleteLoading(false);
+      })
+      .catch((error) => {
+        setDeleteLoading(false);
+        setError(error?.response?.data?.message);
+      });
+  };
+
   return (
     <div className="w-full flex flex-col justify-start items-start gap-4">
-      <NotificationCreateModal
-        isOpen={isCreateOpen}
-        setIsOpen={setIsCreateOpen}
-        setReload={setReload}
-      />
-      <button
-        onClick={() => setIsCreateOpen((prev) => !prev)}
-        className={`active:scale-95 fixed bottom-4 right-6 flex justify-center items-center w-12 h-12 rounded-full bg shadow-md border border-purple-500 text-white  font-medium text-xl  outline-none   hover:opacity-90 transition-all duration-500 ${
-          isCreateOpen ? "rotate-45" : "rotate-0"
-        }`}
-      >
-        <span className="leading-3">
-          <FiPlus />
-        </span>
-      </button>
-
       <div className="w-full h-auto flex justify-between items-center gap-2">
-        <div className="w-[40%] grid grid-cols-2 shadow-sm lg:flex  px-[2px] py-[2px] border border-gray-200 bg-white h-12 rounded-full">
-          <button
-            onClick={() => setActiveTab("admin")}
-            className={`min-w-[90px] w-full px-4 py-2 capitalize text-sm font-normal leading-[17.58px] ${
-              activeTab === "admin"
-                ? "bg-purple-500  text-white"
-                : "bg-white  text-black"
-            } rounded-l-full `}
-          >
-            Admin
-          </button>
-          <button
-            onClick={() => setActiveTab("user")}
-            className={`min-w-[90px] w-full px-4 py-2 capitalize text-sm font-normal leading-[17.58px] ${
-              activeTab === "user"
-                ? "bg-purple-500 text-white"
-                : "bg-white text-black"
-            } rounded-r-full `}
-          >
-            User
-          </button>
-        </div>
-        <div className="w-[60%] h-12 flex justify-start items-center gap-2  relative">
+        <div className="w-full h-12 flex justify-start items-center gap-2  relative">
           <input
             type="text"
             id="name"
@@ -144,38 +114,32 @@ const Notifications = () => {
       </div>
 
       <div className="w-full h-auto grid grid-cols-3 gap-2 justify-start items-start">
-        {notificationLoading && (
+        {reportLoading && (
           <div className="w-full col-span-3 h-[80vh] flex items-center justify-center">
             <Loader />
           </div>
         )}
-        {!notificationLoading && filteredData?.length > 0
+        {!reportLoading && filteredData?.length > 0
           ? filteredData?.reverse()?.map((notification, index) => {
               return (
                 <div
                   key={index}
-                  onClick={() => {
-                    console.log(notification);
-                    if (notification?.post) {
-                      setActiveLink("Categories");
-                      navigate("/categories", {
-                        state: {
-                          open: true,
-                          id: notification?.post,
-                          category: notification?.category,
-                        },
-                      });
-                    }
-                  }}
-                  class=" px-6 cursor-pointer py-4 bg-purple-500/10 border rounded-2xl h-28  w-full"
+                  class=" px-6 relative py-4 bg-purple-500/10 border rounded-2xl h-36  w-full"
                 >
                   <div class=" inline-flex items-center justify-between w-full">
                     <div class="inline-flex gap-2 items-center">
                       <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
-                        <IoMdNotifications className="text-purple-600 text-2xl" />
+                        <img
+                          src={
+                            notification?.reporter?.profilePicture ||
+                            `https://eu.ui-avatars.com/api/?name=${notification?.reporter?.name}&size=250`
+                          }
+                          className="w-full h-full rounded-full"
+                          alt=""
+                        />
                       </div>
                       <h3 class="font-bold text-base text-gray-800">
-                        {notification?.title}
+                        {notification?.reporter?.name}
                       </h3>
                     </div>
                     <p class="text-xs text-gray-500">
@@ -187,14 +151,43 @@ const Notifications = () => {
                     </p>
                   </div>
                   <p class="mt-1 text-sm">
-                    {notification?.message?.length > 80
-                      ? notification?.message?.slice(0, 80) + "..."
-                      : notification?.message}
+                    {notification?.comment?.text?.length > 80
+                      ? notification?.comment?.text?.slice(0, 80) + "..."
+                      : notification?.comment?.text}
                   </p>
+
+                  <div
+                    id="dropdown-button"
+                    data-target="dropdown-1"
+                    class="w-full justify-end absolute bottom-3 right-3 dropdown-toggle flex-shrink-0 z-10 flex items-center text-base font-medium text-center text-gray-900 bg-transparent  "
+                    type="button"
+                  >
+                    <button
+                      id="dropdown-button"
+                      data-target="dropdown-2"
+                      onClick={() => {
+                        setDeleteOpen(true);
+                        setDeleteId(notification?._id);
+                      }}
+                      class="w-12 h-7 justify-center dropdown-toggle flex-shrink-0 z-10 flex items-center text-xs font-medium bg text-white text-center rounded-full   "
+                      type="button"
+                    >
+                      Delete
+                    </button>
+
+                    {deleteOpen && (
+                      <DeleteReport
+                        showModal={deleteOpen}
+                        setShowModal={setDeleteOpen}
+                        onConfirm={onConfirm}
+                        loading={deleteLoading}
+                      />
+                    )}
+                  </div>
                 </div>
               );
             })
-          : !notificationLoading && (
+          : !reportLoading && (
               <div className="w-full col-span-3 h-[90vh] flex items-center justify-center">
                 <img src="/no-data.jpg" alt="" className="h-96" />
               </div>
@@ -204,4 +197,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications;
+export default Reports;

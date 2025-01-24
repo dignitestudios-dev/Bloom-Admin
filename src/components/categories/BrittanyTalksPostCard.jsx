@@ -7,7 +7,13 @@ import { GoKebabHorizontal } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
 import DeletionModal from "./DeletionModal";
 
-const BrittanyTalksPostCard = ({ post, setUpdate, categoryId }) => {
+const BrittanyTalksPostCard = ({
+  post,
+  setUpdate,
+  categoryId,
+  setPostId,
+  setCommentOpen,
+}) => {
   function formatDate(isoDate) {
     const date = new Date(isoDate);
     const options = { month: "short", day: "numeric", year: "numeric" };
@@ -73,8 +79,16 @@ const BrittanyTalksPostCard = ({ post, setUpdate, categoryId }) => {
         </p>
 
         <div className="w-auto flex justify-start items-center gap-3 text-xs absolute bottom-2 font-medium text-gray-600">
-          <span>{formatDate(post?.createdAt)}</span>-
-          <span>{post?.duration}</span>
+          <button
+            onClick={() => {
+              setCommentOpen(true);
+              setPostId(post?._id);
+            }}
+            class=" hover:underline underline-offset-2 cursor-pointer text-gray-500 "
+          >
+            {post?.commentsCount} comment
+          </button>
+          -<span>{post?.duration}</span>
         </div>
       </div>
     </div>

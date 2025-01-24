@@ -6,7 +6,7 @@ import { AppContext } from "../../../context/AppContext";
 import EnrichmentPostCard from "../../../components/categories/EnrichmentPostCard";
 import Loader from "../../../components/global/Loader";
 
-const Enrichment = ({ id }) => {
+const Enrichment = ({ id, setPostId, setCommentOpen }) => {
   const { error, setError, baseUrl } = useContext(AppContext);
   const [postsLoading, setPostsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -62,6 +62,8 @@ const Enrichment = ({ id }) => {
                   key={index}
                   setUpdate={setReload}
                   categoryId={id}
+                  setPostId={setPostId}
+                  setCommentOpen={setCommentOpen}
                 />
               );
             })

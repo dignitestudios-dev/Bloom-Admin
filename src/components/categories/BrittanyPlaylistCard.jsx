@@ -1,6 +1,6 @@
 import React from "react";
 
-const BrittanyPlaylistCard = ({ post }) => {
+const BrittanyPlaylistCard = ({ post, setPostId, setCommentOpen }) => {
   return (
     <div class="bg-white w-full h-[26rem] relative shadow rounded-2xl border p-3">
       <div class="group h-64 relative">
@@ -57,7 +57,13 @@ const BrittanyPlaylistCard = ({ post }) => {
             {post?.likeCount}
           </span>
         </span>
-        <span class="flex  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1">
+        <button
+          onClick={() => {
+            setCommentOpen(true);
+            setPostId(post?._id);
+          }}
+          class="flex cursor-pointer  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="15"
@@ -74,7 +80,7 @@ const BrittanyPlaylistCard = ({ post }) => {
           <span class="font-semibold text-sm text-gray-600">
             {post?.commentsCount}
           </span>
-        </span>
+        </button>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { AppContext } from "../../../context/AppContext";
 import Loader from "../../../components/global/Loader";
 
-const DailyDevo = ({ id }) => {
+const DailyDevo = ({ id, setPostId, setCommentOpen }) => {
   const { error, setError, baseUrl } = useContext(AppContext);
   const [postsLoading, setPostsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -56,7 +56,14 @@ const DailyDevo = ({ id }) => {
         )}
         {!postsLoading && posts?.length > 0
           ? posts?.map((post) => {
-              return <DailyDevoPostCard post={post} setUpdate={setReload} />;
+              return (
+                <DailyDevoPostCard
+                  post={post}
+                  setUpdate={setReload}
+                  setPostId={setPostId}
+                  setCommentOpen={setCommentOpen}
+                />
+              );
             })
           : !postsLoading && (
               <div className="w-full col-span-3 h-[90vh] flex items-center justify-center">

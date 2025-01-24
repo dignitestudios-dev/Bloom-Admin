@@ -7,7 +7,7 @@ import { AppContext } from "../../../context/AppContext";
 import { FaRegEdit } from "react-icons/fa";
 import Loader from "../../../components/global/Loader";
 
-const BrittanyPlaylist = ({ id }) => {
+const BrittanyPlaylist = ({ id, setPostId, setCommentOpen }) => {
   const { error, setError, baseUrl, navigate } = useContext(AppContext);
   const [postsLoading, setPostsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -92,7 +92,14 @@ const BrittanyPlaylist = ({ id }) => {
         )}
         {!postsLoading && posts?.length > 0
           ? posts?.map((post, index) => {
-              return <BrittanyPlaylistCard key={index} post={post} />;
+              return (
+                <BrittanyPlaylistCard
+                  key={index}
+                  post={post}
+                  setPostId={setPostId}
+                  setCommentOpen={setCommentOpen}
+                />
+              );
             })
           : !postsLoading && (
               <div className="w-full col-span-3 h-[90vh] flex items-center justify-center">

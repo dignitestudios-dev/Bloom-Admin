@@ -157,7 +157,7 @@ const ChangePassword = () => {
       </div>
       {/* <!-- Left Pane --> */}
       <div className="hidden lg:flex  items-center justify-center flex-1   text-black">
-        <div className="w-full h-full  bg-white border-l flex items-center justify-center">
+        <div className="w-full h-full  bg-purple-500/10 rounded-3xl flex items-center justify-center">
           <img src={Flowers} alt="mockup" className="w-[70%]" />
         </div>
       </div>

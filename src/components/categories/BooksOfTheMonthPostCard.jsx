@@ -7,7 +7,12 @@ import { MdDeleteOutline } from "react-icons/md";
 import DeletionModal from "./DeletionModal";
 import { useNavigate } from "react-router-dom";
 
-const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
+const BooksOfTheMonthPostCard = ({
+  post,
+  setUpdate,
+  setPostId,
+  setCommentOpen,
+}) => {
   function formatDate(isoDate) {
     const date = new Date(isoDate);
     const options = { month: "short", day: "numeric", year: "numeric" };
@@ -105,7 +110,13 @@ const BooksOfTheMonthPostCard = ({ post, setUpdate }) => {
               {post?.likeCount}
             </span>
           </span>
-          <span class="flex  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1">
+          <span
+            onClick={() => {
+              setCommentOpen(true);
+              setPostId(post?._id);
+            }}
+            class="flex cursor-pointer rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-1"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"

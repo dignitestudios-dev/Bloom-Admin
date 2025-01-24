@@ -4,7 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { AppContext } from "../../../context/AppContext";
 import Loader from "../../../components/global/Loader";
-const SuperBoost = ({ id }) => {
+const SuperBoost = ({ id, setPostId, setCommentOpen }) => {
   const { error, setError, baseUrl } = useContext(AppContext);
   const [postsLoading, setPostsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -60,6 +60,8 @@ const SuperBoost = ({ id }) => {
                   post={post}
                   setUpdate={setReload}
                   categoryId={id}
+                  setPostId={setPostId}
+                  setCommentOpen={setCommentOpen}
                 />
               );
             })

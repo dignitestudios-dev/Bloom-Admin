@@ -10,7 +10,13 @@ import { GoKebabHorizontal } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
 import DeletionModal from "./DeletionModal";
 
-const TextPostCard = ({ post, categoryId, setUpdate }) => {
+const TextPostCard = ({
+  post,
+  categoryId,
+  setUpdate,
+  setPostId,
+  setCommentOpen,
+}) => {
   console.log(post);
   const [viewAll, setViewAll] = useState(false);
   const { error, setError, baseUrl, success, setSuccess } =
@@ -39,7 +45,7 @@ const TextPostCard = ({ post, categoryId, setUpdate }) => {
   const [showModal, setShowModal] = useState(false);
 
   return (
-    <div class="bg-gray-50 w-full rounded-md relative border h-auto min-h-48  py-3 px-3 ">
+    <div class="bg-gray-50 w-full rounded-md relative border h-auto min-h-44  py-3 px-3 ">
       <DeletionModal
         showModal={showModal}
         setShowModal={setShowModal}
@@ -58,7 +64,7 @@ const TextPostCard = ({ post, categoryId, setUpdate }) => {
       <p className="w-[90%] text-sm font-normal text-gray-600 px-1">
         {post?.description}
       </p>
-      <div class="w-full h-8 flex items-center  mt-3">
+      <div class="w-full h-8 flex items-center absolute bottom-1 right-0 px-2  mt-3">
         <div class="bg-blue-500 z-10 w-5 h-5 rounded-full flex items-center justify-center ">
           <svg
             class="w-3 h-3 fill-current text-white"
@@ -79,7 +85,10 @@ const TextPostCard = ({ post, categoryId, setUpdate }) => {
         <div class="w-full flex justify-between">
           <p class="ml-1 text-gray-500">{post?.likeCount}</p>
           <button
-            onClick={() => setViewAll((prev) => !prev)}
+            onClick={() => {
+              setCommentOpen(true);
+              setPostId(post?._id);
+            }}
             class="ml-1 text-gray-500 hover:underline"
           >
             {post?.commentsCount} comment

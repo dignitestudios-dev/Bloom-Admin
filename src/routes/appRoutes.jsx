@@ -8,6 +8,7 @@ import Users from "../pages/App/Users";
 import DailyDevo from "../pages/App/categories/DailyDevo";
 import ChangePassword from "../pages/App/profile/ChangePassword";
 import CreatePost from "../pages/App/CreatePost";
+import Reports from "../pages/App/Reports";
 
 export const appRoutes = [
   {
@@ -40,6 +41,11 @@ export const appRoutes = [
     title: "Categories",
     url: "/categories",
     page: <AppLayout page={<Categories />} />,
+  },
+  {
+    title: "Reports",
+    url: "/reports",
+    page: <AppLayout page={<Reports />} />,
   },
   {
     title: "Daily Devo",

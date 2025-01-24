@@ -6,7 +6,13 @@ import { GoKebabHorizontal } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
 import DeletionModal from "./DeletionModal";
 
-const EventsCard = ({ post, setUpdate, categoryId }) => {
+const EventsCard = ({
+  post,
+  setUpdate,
+  categoryId,
+  setPostId,
+  setCommentOpen,
+}) => {
   console.log(post);
   console.log(post);
   const [date, setDate] = useState(null);
@@ -95,7 +101,7 @@ const EventsCard = ({ post, setUpdate, categoryId }) => {
           <div class="md:text-3xl">{date}</div>
           <div class="md:text-xl">{time}</div>
         </div>
-        <div class="p-4 font-normal text-gray-800 md:w-3/4">
+        <div class="p-4 font-normal relative text-gray-800 md:w-3/4">
           <h1 class="mb-4 text-2xl font-bold leading-none tracking-tight text-gray-800">
             {post?.title}
           </h1>
@@ -104,6 +110,18 @@ const EventsCard = ({ post, setUpdate, categoryId }) => {
               ? post?.description?.slice(0, 200) + "..."
               : post?.description}
           </p>
+          {/* <div class="w-full absolute bottom-2 left-0 px-4 flex justify-between">
+            <p class="ml-1 text-gray-500">{post?.likeCount}</p>
+            <button
+              onClick={() => {
+                setCommentOpen(true);
+                setPostId(post?._id);
+              }}
+              class="ml-1 hover:underline underline-offset-2 cursor-pointer text-gray-500 "
+            >
+              {post?.commentsCount} comment
+            </button>
+          </div> */}
         </div>
       </div>
     </div>

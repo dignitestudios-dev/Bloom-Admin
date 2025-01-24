@@ -7,7 +7,7 @@ import { GoKebabHorizontal } from "react-icons/go";
 import DeletionModal from "./DeletionModal";
 import { useNavigate } from "react-router-dom";
 
-const BloomingPostCard = ({ post, setUpdate }) => {
+const BloomingPostCard = ({ post, setUpdate, setPostId, setCommentOpen }) => {
   const { error, setError, baseUrl, success, setSuccess } =
     useContext(AppContext);
   const navigate = useNavigate();
@@ -79,7 +79,13 @@ const BloomingPostCard = ({ post, setUpdate }) => {
               {post?.likeCount}
             </span>
           </span>
-          <span class="flex  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-2">
+          <span
+            onClick={() => {
+              setCommentOpen(true);
+              setPostId(post?._id);
+            }}
+            class="flex cursor-pointer  rounded-lg px-2 py-1 flex-row justify-start items-center w-auto space-x-2"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="15"

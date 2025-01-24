@@ -9,8 +9,9 @@ import axios from "axios";
 import { GoKebabHorizontal } from "react-icons/go";
 import { MdDeleteOutline } from "react-icons/md";
 import DeletionModal from "./DeletionModal";
+import PostModal from "./PostModal";
 
-const DailyDevoPostCard = ({ post, setUpdate }) => {
+const DailyDevoPostCard = ({ post, setUpdate, setPostId, setCommentOpen }) => {
   const [viewAll, setViewAll] = useState(false);
   const { error, setError, baseUrl, success, setSuccess } =
     useContext(AppContext);
@@ -36,26 +37,27 @@ const DailyDevoPostCard = ({ post, setUpdate }) => {
 
   const [showModal, setShowModal] = useState(false);
   return (
-    <div class="bg-white w-full rounded-md border h-auto py-3 px-3 relative">
+    <div class="bg-purple-500/20 w-full rounded-3xl border h-auto py-3 px-3 relative">
       <DeletionModal
         showModal={showModal}
         setShowModal={setShowModal}
         loading={loading}
         action={() => deletePost(post?._id, post?.categoryId)}
       />
+
       <button
         onClick={() => setShowModal(true)}
         className="w-8 h-8 rounded-full bg-purple-600 z-50 text-white text-md flex items-center justify-center absolute top-2 right-2"
       >
         {loading ? <GoKebabHorizontal /> : <MdDeleteOutline />}
       </button>
-      <div className="w-full h-64 bg-gray-200 rounded-md">
+      <div className="w-full h-64 mb-1 bg-gray-200 rounded-2xl">
         <img
           src={
             post?.content ? post?.content : "https://via.placeholder.com/500"
           }
           alt="image"
-          className="w-full h-full object-contain rounded-md"
+          className="w-full h-full object-contain bg-white rounded-2xl"
         />
       </div>
       <span className="text-md font-medium text-gray-700 pt-4 px-1">
@@ -86,7 +88,15 @@ const DailyDevoPostCard = ({ post, setUpdate }) => {
 
         <div class="w-full flex justify-between">
           <p class="ml-1 text-gray-500">{post?.likeCount}</p>
-          <span class="ml-1 text-gray-500 ">{post?.commentsCount} comment</span>
+          <button
+            onClick={() => {
+              setCommentOpen(true);
+              setPostId(post?._id);
+            }}
+            class="ml-1 hover:underline underline-offset-2 cursor-pointer text-gray-500 "
+          >
+            {post?.commentsCount} comment
+          </button>
         </div>
       </div>
 

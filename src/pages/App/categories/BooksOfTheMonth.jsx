@@ -5,7 +5,7 @@ import { AppContext } from "../../../context/AppContext";
 import BooksOfTheMonthPostCard from "../../../components/categories/BooksOfTheMonthPostCard";
 import Loader from "../../../components/global/Loader";
 
-const BooksOfTheMonth = ({ id }) => {
+const BooksOfTheMonth = ({ id, setPostId, setCommentOpen }) => {
   const { error, setError, baseUrl } = useContext(AppContext);
   const [postsLoading, setPostsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -61,6 +61,8 @@ const BooksOfTheMonth = ({ id }) => {
                   key={index}
                   post={post}
                   setUpdate={setReload}
+                  setPostId={setPostId}
+                  setCommentOpen={setCommentOpen}
                 />
               );
             })

@@ -9,6 +9,7 @@ import { GrUpdate } from "react-icons/gr";
 import { RxUpdate } from "react-icons/rx";
 import { WiDayCloudyWindy } from "react-icons/wi";
 import { PiHandWavingLight } from "react-icons/pi";
+import { TbMessageReport } from "react-icons/tb";
 export const sidebar = [
   {
     title: "Dashboard",
@@ -40,6 +41,11 @@ export const sidebar = [
     title: "Categories",
     icon: <MdOutlineCategory />,
     url: "/categories",
+  },
+  {
+    title: "Reports",
+    icon: <TbMessageReport />,
+    url: "/reports",
   },
 
   {

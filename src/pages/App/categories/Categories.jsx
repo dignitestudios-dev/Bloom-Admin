@@ -15,10 +15,16 @@ import Events from "./Events";
 import Enrichment from "./Enrichment";
 import TextPost from "./TextPost";
 import { CiEdit } from "react-icons/ci";
+import { useLocation } from "react-router-dom";
+import PostModal from "../../../components/categories/PostModal";
 const Categories = () => {
   const [searchInput, setSearchInput] = useState("");
   const { baseUrl, navigate, setError } = useContext(AppContext);
   const [categories, setCategories] = useState([]);
+  const location = useLocation();
+  const { open = false, id = null, category = null } = location?.state || {};
+  const [modalOpen, setModalOpen] = useState(open);
+  const [postId, setPostId] = useState(id);
   const [categoriesLoading, setCategoriesLoading] = useState(false);
   const [update, setUpdate] = useState(false);
   const [categoryId, setCategoryId] = useState();
@@ -33,9 +39,13 @@ const Categories = () => {
       };
       axios.get(`${baseUrl}/api/category?events=true`, { headers }).then(
         (response) => {
-          console.log(response);
           setCategories(response?.data?.data);
-          setCategoryId(response?.data?.data[0]._id);
+          console.log(categoryId);
+          // if (categoryId !== undefined || categoryId !== null) {
+          //   setCategoryId(categoryId);
+          // } else {
+          //   setCategoryId(response?.data?.data[0]._id);
+          // }
           setCategoriesLoading(false);
         },
         (error) => {
@@ -71,6 +81,10 @@ const Categories = () => {
       setCategoryId(id);
     }
   };
+
+  useEffect(() => {
+    setCategoryId(category);
+  }, []);
 
   const [image, setImage] = useState(null);
 
@@ -122,6 +136,13 @@ const Categories = () => {
     <div
       className={`w-full min-h-[92vh] h-[92vh] max-h-[92vh] -my-4   grid grid-cols-7  justify-start items-start `}
     >
+      {modalOpen && (
+        <PostModal
+          isOpen={modalOpen}
+          onRequestClose={() => setModalOpen(false)}
+          postId={postId}
+        />
+      )}
       <input
         onChange={handleImageChange}
         type="file"
@@ -131,23 +152,61 @@ const Categories = () => {
       />
       <div className="col-span-5 border-r py-3 pr-3 pl-0 h-full overflow-y-auto flex flex-col gap-4 justify-start items-start">
         {currentCategory == "Daily Devo" ? (
-          <DailyDevo id={categoryId} />
+          <DailyDevo
+            id={categoryId}
+            setPostId={setPostId}
+            setCommentOpen={setModalOpen}
+          />
         ) : currentCategory == "Super Boost" ? (
-          <SuperBoost id={categoryId} />
+          <SuperBoost
+            id={categoryId}
+            setPostId={setPostId}
+            setCommentOpen={setModalOpen}
+          />
         ) : currentCategory == "Brittany Talks" ? (
-          <BrittanyTalks id={categoryId} />
+          <BrittanyTalks
+            id={categoryId}
+            setPostId={setPostId}
+            setCommentOpen={setModalOpen}
+          />
         ) : currentCategory == "Brittany's Playlist" ? (
-          <BrittanyPlaylist id={categoryId} />
+          <BrittanyPlaylist
+            id={categoryId}
+            setPostId={setPostId}
+            setCommentOpen={setModalOpen}
+          />
         ) : currentCategory == "Blooming" ? (
-          <Blooming id={categoryId} />
+          <Blooming
+            id={categoryId}
+            setPostId={setPostId}
+            setCommentOpen={setModalOpen}
+          />
         ) : currentCategory == "Books of the Month" ? (
-          <BooksOfTheMonth id={categoryId} />
+          <BooksOfTheMonth
+            id={categoryId}
+            setPostId={setPostId}
+            setCommentOpen={setModalOpen}
+          />
         ) : currentCategory == "Enrichment" ? (
-          <Enrichment id={categoryId} />
+          <Enrichment
+            id={categoryId}
+            setPostId={setPostId}
+            setCommentOpen={setModalOpen}
+          />
         ) : currentCategory == "Post" ? (
-          <TextPost id={categoryId} />
+          <TextPost
+            id={categoryId}
+            setPostId={setPostId}
+            setCommentOpen={setModalOpen}
+          />
         ) : (
-          currentCategory == "Events" && <Events id={categoryId} />
+          currentCategory == "Events" && (
+            <Events
+              id={categoryId}
+              setPostId={setPostId}
+              setCommentOpen={setModalOpen}
+            />
+          )
         )}
       </div>
       <div className="w-full h-auto max-h-full overflow-y-hidden  col-span-2 grid grid-cols-1  pl-3 py-3 justify-start items-start gap-2">
@@ -182,6 +241,7 @@ const Categories = () => {
           : categories?.map((category, key) => {
               return (
                 <div
+                  key={key}
                   className={`w-full group flex hover:bg-purple-600/20 ${
                     categoryId == category?._id && "bg-purple-600/20"
                   } border pr-1 h-auto justify-start items-center gap-2 rounded-lg`}

@@ -33,7 +33,7 @@ const NotificationCreateModal = ({ isOpen, setIsOpen, setReload }) => {
 
         axios
           .post(
-            `${baseUrl}/api/createNotification`,
+            `${baseUrl}/api/2/notifications/admin`,
             {
               title: values.title,
               message: values.message,
@@ -66,7 +66,7 @@ const NotificationCreateModal = ({ isOpen, setIsOpen, setReload }) => {
       <form
         onSubmit={handleSubmit}
         ref={modalRef}
-        className="bg-white w-72 h-80 p-4 flex flex-col gap-2 justify-start items-start rounded-2xl shadow-xl border"
+        className="bg-purple-400 w-72 h-80 p-4 flex flex-col gap-2 justify-start items-start rounded-2xl shadow-xl border"
       >
         <div className="w-full flex flex-col justify-start items-start">
           <label
@@ -83,7 +83,7 @@ const NotificationCreateModal = ({ isOpen, setIsOpen, setReload }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="e.g. New Feature Update"
-            className={`mt-1 px-3 h-12 placeholder:text-sm w-full border rounded-md bg-white focus:border-gray-200 focus:outline-none  focus:ring-offset-2 focus:ring-gray-300 transition-colors duration ${
+            className={`mt-1 px-3 h-12 placeholder:text-sm w-full border rounded-lg bg-white focus:border-gray-200 focus:outline-none  focus:ring-offset-2 focus:ring-gray-300 transition-colors duration ${
               errors.title && touched.title ? "border-red-600 shake" : null
             }`}
           />
@@ -106,7 +106,7 @@ const NotificationCreateModal = ({ isOpen, setIsOpen, setReload }) => {
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="e.g. Our app is getting a new feature"
-            className={`mt-1 p-3 h-32 resize-none bg-white w-full placeholder:text-sm border rounded-md focus:border-gray-200 focus:outline-none  focus:ring-offset-2 focus:ring-gray-300 transition-colors duration ${
+            className={`mt-1 p-3 h-32 resize-none bg-white w-full placeholder:text-sm border rounded-lg focus:border-gray-200 focus:outline-none  focus:ring-offset-2 focus:ring-gray-300 transition-colors duration ${
               errors.message && touched.message ? "border-red-600 shake" : null
             }`}
           ></textarea>

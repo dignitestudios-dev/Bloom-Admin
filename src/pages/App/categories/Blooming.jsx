@@ -4,7 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { AppContext } from "../../../context/AppContext";
 import Loader from "../../../components/global/Loader";
-const Blooming = ({ id }) => {
+const Blooming = ({ id, setPostId, setCommentOpen }) => {
   const { error, setError, baseUrl } = useContext(AppContext);
   const [postsLoading, setPostsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -60,6 +60,8 @@ const Blooming = ({ id }) => {
                   key={index}
                   post={post}
                   setUpdate={setReload}
+                  setPostId={setPostId}
+                  setCommentOpen={setCommentOpen}
                 />
               );
             })

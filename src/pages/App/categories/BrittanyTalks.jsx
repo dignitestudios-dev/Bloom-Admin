@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { AppContext } from "../../../context/AppContext";
 import Loader from "../../../components/global/Loader";
 
-const BrittanyTalks = ({ id }) => {
+const BrittanyTalks = ({ id, setPostId, setCommentOpen }) => {
   const { error, setError, baseUrl } = useContext(AppContext);
   const [postsLoading, setPostsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
@@ -61,6 +61,8 @@ const BrittanyTalks = ({ id }) => {
                   key={index}
                   setUpdate={setReload}
                   categoryId={id}
+                  setPostId={setPostId}
+                  setCommentOpen={setCommentOpen}
                 />
               );
             })

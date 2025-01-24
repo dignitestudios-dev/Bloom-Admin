@@ -57,7 +57,7 @@ const Users = () => {
           Search
         </button>
       </div>
-      <div className="w-full overflow-x-auto rounded-xl grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 border border-gray-200 bg-white px-6 py-6 ">
+      <div className="w-full overflow-x-auto rounded-xl grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2 bg-white  ">
         {userLoading && (
           <div className="w-full col-span-4 h-[80vh] flex items-center justify-center">
             <Loader />
@@ -68,7 +68,7 @@ const Users = () => {
               return (
                 <div
                   key={index}
-                  className="w-full bg-gray-50 flex justify-start items-center gap-2 rounded-xl p-3 border"
+                  className="w-full bg-purple-500/10 flex justify-start items-center gap-2 rounded-xl p-3 border border-purple-200"
                 >
                   <img
                     src={
@@ -84,7 +84,7 @@ const Users = () => {
                     <span className="text-md font-medium text-gray-900">
                       {data?.name}
                     </span>
-                    <p className="text-xs font-medium  text-gray-600">
+                    <p className="text-[10px] font-medium  text-gray-600">
                       {data?.email}
                     </p>
                   </div>
