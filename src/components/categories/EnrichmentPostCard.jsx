@@ -70,8 +70,8 @@ const EnrichmentPostCard = ({
 
       <div className=" relative w-[calc(100%-6rem)] h-full pt-2 overflow-y-auto flex flex-col justify-start items-start gap-1">
         <h3 className="text-md font-semibold text-[#1c1c1c] ">
-          {post?.title?.length > 30
-            ? post?.title?.slice(0, 30) + "..."
+          {post?.title?.length > 25
+            ? post?.title?.slice(0, 25) + "..."
             : post?.title}
         </h3>
         <p className="text-xs text-left font-normal leading-4 tracking-tighter text-[#1c1c1c]">
