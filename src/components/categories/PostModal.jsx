@@ -53,6 +53,7 @@ const PostModal = ({ isOpen, onRequestClose, postId }) => {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [hitApi, setHitApi] = useState(false);
 
   const onConfirm = () => {
     setDeleteLoading(true);
@@ -75,7 +76,8 @@ const PostModal = ({ isOpen, onRequestClose, postId }) => {
 
   useEffect(() => {
     deleteId && onConfirm();
-  }, [deleteId]);
+  }, [hitApi]);
+
   return (
     <Modal
       isOpen={isOpen}
@@ -139,6 +141,7 @@ const PostModal = ({ isOpen, onRequestClose, postId }) => {
                                             data-target="dropdown-2"
                                             onClick={() => {
                                               setDeleteOpen(true);
+                                              setDeleteId(comment?._id);
                                             }}
                                             class="w-12 h-7 justify-center dropdown-toggle flex-shrink-0 z-10 flex items-center text-xs font-medium bg text-white text-center rounded-full   absolute right-0 top-0"
                                             type="button"
@@ -149,8 +152,8 @@ const PostModal = ({ isOpen, onRequestClose, postId }) => {
                                           <DeleteComment
                                             showModal={deleteOpen}
                                             setShowModal={setDeleteOpen}
-                                            commentId={comment?._id}
-                                            setDeleteId={setDeleteId}
+                                            commentId={deleteId}
+                                            setHitApi={setHitApi}
                                             loading={deleteLoading}
                                           />
                                         </div>
@@ -200,6 +203,7 @@ const PostModal = ({ isOpen, onRequestClose, postId }) => {
                                                 id="dropdown-button"
                                                 onClick={() => {
                                                   setDeleteOpen(true);
+                                                  setDeleteId(reply?._id);
                                                 }}
                                                 data-target="dropdown-2"
                                                 class="w-12 h-7 justify-center dropdown-toggle flex-shrink-0 z-10 flex items-center text-xs font-medium bg text-white text-center rounded-full   absolute right-0 top-0"
@@ -210,8 +214,8 @@ const PostModal = ({ isOpen, onRequestClose, postId }) => {
                                               <DeleteComment
                                                 showModal={deleteOpen}
                                                 setShowModal={setDeleteOpen}
-                                                commentId={comment?._id}
-                                                setDeleteId={setDeleteId}
+                                                commentId={deleteId}
+                                                setHitApi={setHitApi}
                                                 loading={deleteLoading}
                                               />
                                             </div>

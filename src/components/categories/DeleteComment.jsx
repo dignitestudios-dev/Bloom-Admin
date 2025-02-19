@@ -5,7 +5,7 @@ const DeleteComment = ({
   showModal,
   setShowModal,
   commentId,
-  setDeleteId,
+  setHitApi,
   loading,
 }) => {
   return showModal ? (
@@ -29,7 +29,7 @@ const DeleteComment = ({
               <button
                 disabled={loading}
                 className="bg-purple-600 text-white  px-4 py-2 mx-1 rounded-full text-sm font-medium mt-2 hover:bg-red-500"
-                onClick={() => setDeleteId(commentId)}
+                onClick={() => setHitApi((prev) => !prev)}
               >
                 {loading ? "Deleting" : "Delete"}
               </button>
