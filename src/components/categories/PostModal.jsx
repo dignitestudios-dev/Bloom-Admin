@@ -99,11 +99,8 @@ const PostModal = ({ isOpen, onRequestClose, postId }) => {
                     <div class="w-full flex-col justify-start items-end gap-5 flex">
                       {comments?.map((comment, key) => {
                         return (
-                          <>
-                            <div
-                              key={key}
-                              class="w-full p-4 bg-purple-500/20 rounded-2xl border border-gray-200 flex-col justify-start items-start gap-8 flex"
-                            >
+                          <div key={key} class="w-full">
+                            <div class="w-full p-4 bg-purple-500/20 rounded-2xl border border-gray-200 flex-col justify-start items-start gap-8 flex">
                               <div class="w-full flex-col justify-center items-start gap-3.5 flex">
                                 <div class="w-full justify-between items-center inline-flex">
                                   <div class="justify-start items-center gap-2.5 flex">
@@ -223,14 +220,14 @@ const PostModal = ({ isOpen, onRequestClose, postId }) => {
                                         </div>
                                       </div>
                                       <p class="text-gray-800 text-xs font-normal leading-snug">
-                                        {comment?.text}
+                                        {reply?.text}
                                       </p>
                                     </div>
                                   </div>
                                 </div>
                               );
                             })}
-                          </>
+                          </div>
                         );
                       })}
                     </div>
