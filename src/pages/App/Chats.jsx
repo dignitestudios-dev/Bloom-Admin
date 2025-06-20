@@ -182,14 +182,14 @@ export const Chats = () => {
       setGroupedMessages(groupMessagesByDate(messages));
     }
   }, [messages]);
-  const limitedUsers = users.slice(0, 84);
+  const limitedUsers = users;
   const [count, setCount] = useState([]);
 
   const fetchUnreadCounts = async () => {
     const currentAdminId = Cookies.get("id");
     const counts = [];
 
-    const limitedUsers = users.slice(0, 84);
+    const limitedUsers = users;
 
     const queryPromises = limitedUsers.map(async (user) => {
       const messagesRef = collection(db, "chatroom", user.id, "messages");
