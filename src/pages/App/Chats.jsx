@@ -16,6 +16,12 @@ import {
   orderBy,
   addDoc,
   Timestamp,
+  doc,
+  increment,
+  updateDoc,
+  where,
+  getDocs,
+  limit,
 } from "firebase/firestore";
 import Loader from "../../components/global/Loader";
 import { useNavigate } from "react-router-dom";
@@ -25,7 +31,7 @@ export const Chats = () => {
   const [userLoading, setUserLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [reload, setReload] = useState(false);
-  const [chatRoom, setChatRoom] = useState();
+  const [chatRoom, setChatRoom] = useState(null);
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
@@ -39,7 +45,7 @@ export const Chats = () => {
       .get(`${baseUrl}/auth/allUser`, { headers })
       .then((response) => {
         setUsers(response?.data?.data);
-        setChatRoom(response?.data?.data[0].id);
+        // setChatRoom(response?.data?.data[0].id);
         setUserLoading(false);
       })
       .catch((error) => {
@@ -86,22 +92,33 @@ export const Chats = () => {
     e.preventDefault();
     try {
       setSending(true);
-      const senderId = Cookies.get("id"); // Get the sender's ID
-      const recipientId = chatRoom; // Assuming chatRoom is the ID of the user being interacted with
+      const senderId = Cookies.get("id");
+      const recipientId = chatRoom;
+
+      // Send message to Firestore
       const docRef = collection(db, "chatroom", chatRoomId, "messages");
 
-      // Add a new message to the collection
-      await addDoc(docRef, {
+      const messageData = {
         senderId,
         message: messageText,
+        readBy: {
+          [senderId]: true,
+          [recipientId]: false,
+        },
         timestamp: Timestamp.now(),
+      };
+
+      await addDoc(docRef, messageData);
+
+      // 🔴 Increment unread count for recipient in totalCount
+      const chatroomDocRef = doc(db, "chatroom", chatRoomId);
+      await updateDoc(chatroomDocRef, {
+        [`totalCount.${recipientId}`]: increment(1),
       });
 
-      // Check if the recipient is already in the user list
+      // Update user order in UI
       const recipientExists = users.some((user) => user?.id === recipientId);
-
       if (recipientExists) {
-        // If the recipient exists, move them to the top
         setUsers((prevUsers) => {
           const filteredUsers = prevUsers.filter(
             (user) => user?.id !== recipientId
@@ -113,11 +130,8 @@ export const Chats = () => {
           return updatedUsers;
         });
       } else {
-        // If the recipient does not exist, add them
-        const newUser = {
-          id: recipientId,
-        };
-        setUsers((prevUsers) => [newUser, ...prevUsers]); // Add new user to the top of the list
+        const newUser = { id: recipientId };
+        setUsers((prevUsers) => [newUser, ...prevUsers]);
       }
 
       scrollToBottom();
@@ -125,7 +139,7 @@ export const Chats = () => {
       setSending(false);
     } catch (e) {
       setSending(false);
-      console.error("Error adding message: ", e);
+      console.error("Error sending message:", e);
     }
   }
 
@@ -168,10 +182,90 @@ export const Chats = () => {
       setGroupedMessages(groupMessagesByDate(messages));
     }
   }, [messages]);
+  const limitedUsers = users.slice(0, 84);
+  const [count, setCount] = useState([]);
 
-  const filteredData = users.filter((user) =>
-    user?.name?.toLowerCase().includes(search?.toLowerCase())
-  );
+  const fetchUnreadCounts = async () => {
+    const currentAdminId = Cookies.get("id");
+    const counts = [];
+
+    const limitedUsers = users.slice(0, 84);
+
+    const queryPromises = limitedUsers.map(async (user) => {
+      const messagesRef = collection(db, "chatroom", user.id, "messages");
+
+      const unreadQuery = query(
+        messagesRef,
+        where(`readBy.${currentAdminId}`, "==", false)
+      );
+
+      const latestMsgQuery = query(
+        messagesRef,
+        orderBy("timestamp", "desc"),
+        limit(1)
+      );
+
+      try {
+        const [unreadSnap, latestSnap] = await Promise.all([
+          getDocs(unreadQuery),
+          getDocs(latestMsgQuery),
+        ]);
+
+        const latestMsg = latestSnap.docs[0]?.data();
+        const latestTimestamp = latestMsg?.timestamp?.toMillis() || 0;
+
+        return {
+          userId: user.id,
+          count: unreadSnap.size,
+          lastMessageTimestamp: latestTimestamp,
+        };
+      } catch (error) {
+        console.error("Error fetching for user", user.id, error);
+        return {
+          userId: user.id,
+          count: 0,
+          lastMessageTimestamp: 0,
+        };
+      }
+    });
+
+    const results = await Promise.all(queryPromises);
+
+    // Sort by latest timestamp (desc)
+    results.sort((a, b) => b.lastMessageTimestamp - a.lastMessageTimestamp);
+
+    setCount(results);
+  };
+
+  useEffect(() => {
+    fetchUnreadCounts();
+  }, [users]);
+
+  const [filteredData, setFilteredData] = useState([]);
+  // console.log(count,"querySnapshot");
+  useEffect(() => {
+    if (count.length > 0) {
+      const countMap = new Map(count.map((c) => [c.userId, c]));
+
+      const filteredUserData = limitedUsers
+        .map((user) => {
+          const c = countMap.get(user.id);
+          return {
+            ...user,
+            unreadCount: c?.count || "",
+            lastMessageTimestamp: c?.lastMessageTimestamp || 0,
+          };
+        })
+        .filter((user) =>
+          (user?.name || "").toLowerCase().includes(search.toLowerCase())
+        )
+        .sort((a, b) => b.lastMessageTimestamp - a.lastMessageTimestamp); // 💥 sorting
+
+      setFilteredData(filteredUserData);
+    }
+  }, [count]);
+
+  console.log(filteredData, count, "filteredData");
 
   return (
     <div className="w-full flex h-[92vh] -m-4 flex-row justify-between bg-white">
@@ -181,7 +275,7 @@ export const Chats = () => {
             <Loader />
           </div>
         )}
-        {!messageLoading && messages?.length > 0 ? (
+        {chatRoom && !messageLoading && messages?.length > 0 ? (
           <>
             <div className="flex flex-col mt-5 h-full overflow-y-auto">
               {Object.keys(groupedMessages)?.map((date, idx) => (
@@ -217,16 +311,7 @@ export const Chats = () => {
 
               <div ref={messageEndRef} />
             </div>
-          </>
-        ) : (
-          !messageLoading && (
-            <div className="w-full col-span-3 h-[80vh] flex items-center justify-center">
-              <img src="/no-data.jpg" alt="" className="h-96" />
-            </div>
-          )
-        )}
-
-        <form
+            <form
           onSubmit={(e) => {
             sendMessage(chatRoom, input, e);
           }}
@@ -447,6 +532,16 @@ export const Chats = () => {
             )}
           </button>
         </form>
+          </>
+        ) : (
+          !messageLoading && (
+            <div className="w-full col-span-3 h-[80vh] flex items-center justify-center">
+              <img src="/no-data.jpg" alt="" className="h-96" />
+            </div>
+          )
+        )}
+
+       
       </div>
       <div className="hidden lg:flex flex-col h-full overflow-y-auto lg:w-2/5 border-l ">
         <div className="py-5 px-3 w-full flex justify-center items-center gap-2">
@@ -464,23 +559,67 @@ export const Chats = () => {
         <div className="w-full h-auto grid grid-cols-1 gap-0">
           {filteredData?.length > 0 ? (
             filteredData?.map((user, index) => {
+              console.log(user, "countRecord");
               return (
                 <div
                   key={index}
-                  onClick={() => setChatRoom(user?.id)}
-                  className={`w-full h-20 hover:bg-purple-500/[0.2] ${
-                    user?.id == chatRoom ? "bg-purple-500/[0.2]" : "bg-white"
-                  } cursor-pointer border-b px-3 hidden lg:flex justify-start items-center gap-2`}
+                  onClick={async () => {
+                    setChatRoom(user?.id);
+
+                    const currentAdminId = Cookies.get("id");
+                    const messagesRef = collection(
+                      db,
+                      "chatroom",
+                      user?.id,
+                      "messages"
+                    );
+                    const q = query(
+                      messagesRef,
+                      where(`readBy.${currentAdminId}`, "==", false)
+                    );
+
+                    const snapshot = await getDocs(q);
+
+                    const updatePromises = snapshot.docs.map((docSnap) => {
+                      const messageRef = doc(
+                        db,
+                        "chatroom",
+                        user?.id,
+                        "messages",
+                        docSnap.id
+                      );
+                      return updateDoc(messageRef, {
+                        [`readBy.${currentAdminId}`]: true,
+                      });
+                    });
+
+                    // Reset totalCount for this user
+                    const chatroomRef = doc(db, "chatroom", user?.id);
+                    const resetCount = updateDoc(chatroomRef, {
+                      [`totalCount.${currentAdminId}`]: 0,
+                    });
+
+                    await Promise.all([...updatePromises, resetCount]);
+
+                    fetchUnreadCounts();
+                  }}
+                  className={`w-full h-20 ${
+                    user?.unreadCount > 0 ? "bg-gray-100" : ""
+                  } hover:bg-purple-500/[0.2]                                   
+                  cursor-pointer border-b px-3 hidden lg:flex justify-between items-center gap-2`}
                 >
+                  <div className="w-auto h-auto flex justify-start items-center gap-2">
+
                   <span className="w-auto h-auto relative">
+                   
                     <img
                       src={
                         user?.profilePicture
-                          ? user?.profilePicture
-                          : `https://eu.ui-avatars.com/api/?name=${user?.name}&size=250`
+                        ? user?.profilePicture
+                        : `https://eu.ui-avatars.com/api/?name=${user?.name}&size=250`
                       }
                       className="w-10 h-10 rounded-full shadow-sm"
-                    />
+                      />
                     {/* <span className="w-3 h-3 rounded-full bg-green-500 shadow-md absolute bottom-0 right-0" /> */}
                   </span>
                   <div className="w-auto flex flex-col justify-start items-start">
@@ -489,6 +628,11 @@ export const Chats = () => {
                       {user?.email}
                     </h3>
                   </div>
+                      </div>
+                  <div className={`flex items-center justify-center rounded-full text-[18px] font-semibold ${user?.unreadCount ? "w-8 h-8 bg-purple-500 text-white" : ""} `}
+                  >
+                    {user?.unreadCount}
+                  </div>                  
                   {/* <button className="w-16 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs ml-auto font-medium">
             Delete
           </button> */}
