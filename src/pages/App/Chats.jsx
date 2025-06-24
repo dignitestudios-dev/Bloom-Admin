@@ -134,6 +134,20 @@ export const Chats = () => {
         setUsers((prevUsers) => [newUser, ...prevUsers]);
       }
 
+      await axios.post(
+        `${baseUrl}/api/2/notifications/chatNotification`,
+        {
+          message: messageText,
+          target: "admin", // or "user" if sending to a user
+          userId: recipientId, // optional, include only if needed
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
+        }
+      );
+
       scrollToBottom();
       setInput("");
       setSending(false);
@@ -312,226 +326,226 @@ export const Chats = () => {
               <div ref={messageEndRef} />
             </div>
             <form
-          onSubmit={(e) => {
-            sendMessage(chatRoom, input, e);
-          }}
-          className="py-5 w-full relative flex justify-center items-center gap-2"
-        >
-          <input
-            className="w-[100%] shadow-md py-3 px-4 border outline-none focus:border-purple-500 rounded-full"
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type your message here..."
-          />
-          <button
-            onClick={(e) => {
-              sendMessage(chatRoom, input, e);
-            }}
-            className="w-10 h-10 absolute right-2 shadow-md rounded-full bg-purple-500 hover:opacity-95 text-xl text-white flex items-center justify-center font-medium"
-          >
-            {sending ? (
-              <svg
-                width="20"
-                height="20"
-                fill="#fff"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+              onSubmit={(e) => {
+                sendMessage(chatRoom, input, e);
+              }}
+              className="py-5 w-full relative flex justify-center items-center gap-2"
+            >
+              <input
+                className="w-[100%] shadow-md py-3 px-4 border outline-none focus:border-purple-500 rounded-full"
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Type your message here..."
+              />
+              <button
+                onClick={(e) => {
+                  sendMessage(chatRoom, input, e);
+                }}
+                className="w-10 h-10 absolute right-2 shadow-md rounded-full bg-purple-500 hover:opacity-95 text-xl text-white flex items-center justify-center font-medium"
               >
-                <circle cx="4" cy="12" r="0">
-                  <animate
-                    begin="0;spinner_z0Or.end"
-                    attributeName="r"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="0;3"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    begin="spinner_OLMs.end"
-                    attributeName="cx"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="4;12"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    begin="spinner_UHR2.end"
-                    attributeName="cx"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="12;20"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    id="spinner_lo66"
-                    begin="spinner_Aguh.end"
-                    attributeName="r"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="3;0"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    id="spinner_z0Or"
-                    begin="spinner_lo66.end"
-                    attributeName="cx"
-                    dur="0.001s"
-                    values="20;4"
-                    fill="freeze"
-                  ></animate>
-                </circle>
-                <circle cx="4" cy="12" r="3">
-                  <animate
-                    begin="0;spinner_z0Or.end"
-                    attributeName="cx"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="4;12"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    begin="spinner_OLMs.end"
-                    attributeName="cx"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="12;20"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    id="spinner_JsnR"
-                    begin="spinner_UHR2.end"
-                    attributeName="r"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="3;0"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    id="spinner_Aguh"
-                    begin="spinner_JsnR.end"
-                    attributeName="cx"
-                    dur="0.001s"
-                    values="20;4"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    begin="spinner_Aguh.end"
-                    attributeName="r"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="0;3"
-                    fill="freeze"
-                  ></animate>
-                </circle>
-                <circle cx="12" cy="12" r="3">
-                  <animate
-                    begin="0;spinner_z0Or.end"
-                    attributeName="cx"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="12;20"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    id="spinner_hSjk"
-                    begin="spinner_OLMs.end"
-                    attributeName="r"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="3;0"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    id="spinner_UHR2"
-                    begin="spinner_hSjk.end"
-                    attributeName="cx"
-                    dur="0.001s"
-                    values="20;4"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    begin="spinner_UHR2.end"
-                    attributeName="r"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="0;3"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    begin="spinner_Aguh.end"
-                    attributeName="cx"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="4;12"
-                    fill="freeze"
-                  ></animate>
-                </circle>
-                <circle cx="20" cy="12" r="3">
-                  <animate
-                    id="spinner_4v5M"
-                    begin="0;spinner_z0Or.end"
-                    attributeName="r"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="3;0"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    id="spinner_OLMs"
-                    begin="spinner_4v5M.end"
-                    attributeName="cx"
-                    dur="0.001s"
-                    values="20;4"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    begin="spinner_OLMs.end"
-                    attributeName="r"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="0;3"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    begin="spinner_UHR2.end"
-                    attributeName="cx"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="4;12"
-                    fill="freeze"
-                  ></animate>
-                  <animate
-                    begin="spinner_Aguh.end"
-                    attributeName="cx"
-                    calcMode="spline"
-                    dur="0.5s"
-                    keySplines=".36,.6,.31,1"
-                    values="12;20"
-                    fill="freeze"
-                  ></animate>
-                </circle>
-              </svg>
-            ) : (
-              <BsSend />
-            )}
-          </button>
-        </form>
+                {sending ? (
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="#fff"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle cx="4" cy="12" r="0">
+                      <animate
+                        begin="0;spinner_z0Or.end"
+                        attributeName="r"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="0;3"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        begin="spinner_OLMs.end"
+                        attributeName="cx"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="4;12"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        begin="spinner_UHR2.end"
+                        attributeName="cx"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="12;20"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        id="spinner_lo66"
+                        begin="spinner_Aguh.end"
+                        attributeName="r"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="3;0"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        id="spinner_z0Or"
+                        begin="spinner_lo66.end"
+                        attributeName="cx"
+                        dur="0.001s"
+                        values="20;4"
+                        fill="freeze"
+                      ></animate>
+                    </circle>
+                    <circle cx="4" cy="12" r="3">
+                      <animate
+                        begin="0;spinner_z0Or.end"
+                        attributeName="cx"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="4;12"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        begin="spinner_OLMs.end"
+                        attributeName="cx"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="12;20"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        id="spinner_JsnR"
+                        begin="spinner_UHR2.end"
+                        attributeName="r"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="3;0"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        id="spinner_Aguh"
+                        begin="spinner_JsnR.end"
+                        attributeName="cx"
+                        dur="0.001s"
+                        values="20;4"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        begin="spinner_Aguh.end"
+                        attributeName="r"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="0;3"
+                        fill="freeze"
+                      ></animate>
+                    </circle>
+                    <circle cx="12" cy="12" r="3">
+                      <animate
+                        begin="0;spinner_z0Or.end"
+                        attributeName="cx"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="12;20"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        id="spinner_hSjk"
+                        begin="spinner_OLMs.end"
+                        attributeName="r"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="3;0"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        id="spinner_UHR2"
+                        begin="spinner_hSjk.end"
+                        attributeName="cx"
+                        dur="0.001s"
+                        values="20;4"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        begin="spinner_UHR2.end"
+                        attributeName="r"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="0;3"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        begin="spinner_Aguh.end"
+                        attributeName="cx"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="4;12"
+                        fill="freeze"
+                      ></animate>
+                    </circle>
+                    <circle cx="20" cy="12" r="3">
+                      <animate
+                        id="spinner_4v5M"
+                        begin="0;spinner_z0Or.end"
+                        attributeName="r"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="3;0"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        id="spinner_OLMs"
+                        begin="spinner_4v5M.end"
+                        attributeName="cx"
+                        dur="0.001s"
+                        values="20;4"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        begin="spinner_OLMs.end"
+                        attributeName="r"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="0;3"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        begin="spinner_UHR2.end"
+                        attributeName="cx"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="4;12"
+                        fill="freeze"
+                      ></animate>
+                      <animate
+                        begin="spinner_Aguh.end"
+                        attributeName="cx"
+                        calcMode="spline"
+                        dur="0.5s"
+                        keySplines=".36,.6,.31,1"
+                        values="12;20"
+                        fill="freeze"
+                      ></animate>
+                    </circle>
+                  </svg>
+                ) : (
+                  <BsSend />
+                )}
+              </button>
+            </form>
           </>
         ) : (
           !messageLoading && (
@@ -540,8 +554,6 @@ export const Chats = () => {
             </div>
           )
         )}
-
-       
       </div>
       <div className="hidden lg:flex flex-col h-full overflow-y-auto lg:w-2/5 border-l ">
         <div className="py-5 px-3 w-full flex justify-center items-center gap-2">
@@ -609,30 +621,33 @@ export const Chats = () => {
                   cursor-pointer border-b px-3 hidden lg:flex justify-between items-center gap-2`}
                 >
                   <div className="w-auto h-auto flex justify-start items-center gap-2">
-
-                  <span className="w-auto h-auto relative">
-                   
-                    <img
-                      src={
-                        user?.profilePicture
-                        ? user?.profilePicture
-                        : `https://eu.ui-avatars.com/api/?name=${user?.name}&size=250`
-                      }
-                      className="w-10 h-10 rounded-full shadow-sm"
+                    <span className="w-auto h-auto relative">
+                      <img
+                        src={
+                          user?.profilePicture
+                            ? user?.profilePicture
+                            : `https://eu.ui-avatars.com/api/?name=${user?.name}&size=250`
+                        }
+                        className="w-10 h-10 rounded-full shadow-sm"
                       />
-                    {/* <span className="w-3 h-3 rounded-full bg-green-500 shadow-md absolute bottom-0 right-0" /> */}
-                  </span>
-                  <div className="w-auto flex flex-col justify-start items-start">
-                    <h3 className="text-sm font-semibold">{user?.name}</h3>
-                    <h3 className="text-xs text-gray-700 font-semibold">
-                      {user?.email}
-                    </h3>
+                      {/* <span className="w-3 h-3 rounded-full bg-green-500 shadow-md absolute bottom-0 right-0" /> */}
+                    </span>
+                    <div className="w-auto flex flex-col justify-start items-start">
+                      <h3 className="text-sm font-semibold">{user?.name}</h3>
+                      <h3 className="text-xs text-gray-700 font-semibold">
+                        {user?.email}
+                      </h3>
+                    </div>
                   </div>
-                      </div>
-                  <div className={`flex items-center justify-center rounded-full text-[18px] font-semibold ${user?.unreadCount ? "w-8 h-8 bg-purple-500 text-white" : ""} `}
+                  <div
+                    className={`flex items-center justify-center rounded-full text-[18px] font-semibold ${
+                      user?.unreadCount
+                        ? "w-8 h-8 bg-purple-500 text-white"
+                        : ""
+                    } `}
                   >
                     {user?.unreadCount}
-                  </div>                  
+                  </div>
                   {/* <button className="w-16 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs ml-auto font-medium">
             Delete
           </button> */}
