@@ -138,7 +138,7 @@ export const Chats = () => {
         `${baseUrl}/api/2/notifications/chatNotification`,
         {
           message: messageText,
-          target: "admin", // or "user" if sending to a user
+          target: "user", // or "user" if sending to a user
           userId: recipientId, // optional, include only if needed
         },
         {
