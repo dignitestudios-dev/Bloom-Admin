@@ -108,7 +108,31 @@ export const Chats = () => {
         },
         timestamp: Timestamp.now(),
       };
-
+      try {
+        await axios.post(
+          `${baseUrl}/api/2/notifications/chatNotification`,
+          {
+            message: messageText,
+            target: "user",
+            userId: recipientId,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+          }
+        );
+      } catch (error) {
+        if (error.response.status == 401) {
+          navigate("/login");
+          return (
+            <Error message={"Session expired. Please log in again21321."} />
+          );
+          // Redirect to login
+        } else {
+          console.error("Notification error:", error);
+        }
+      }
       await addDoc(docRef, messageData);
 
       // 🔴 Increment unread count for recipient in totalCount
@@ -136,31 +160,6 @@ export const Chats = () => {
       }
 
       // 🔔 Send notification and handle 401
-      try {
-        await axios.post(
-          `${baseUrl}/api/2/notifications/chatNotification`,
-          {
-            message: messageText,
-            target: "user",
-            userId: recipientId,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get("token")}`,
-            },
-          }
-        );
-      } catch (error) {
-        if (error.response.status == 401) {
-          navigate("/login");
-          return (
-            <Error message={"Session expired. Please log in again21321."} />
-          );
-          // Redirect to login
-        } else {
-          console.error("Notification error:", error);
-        }
-      }
 
       scrollToBottom();
       setInput("");
