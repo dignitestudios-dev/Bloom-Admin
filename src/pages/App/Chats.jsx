@@ -6,7 +6,6 @@ import { TbFlagHeart } from "react-icons/tb";
 import { FaHeart } from "react-icons/fa";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { AppContext } from "../../context/AppContext";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { db } from "../../firebase/firebase";
 import {
@@ -25,6 +24,8 @@ import {
 } from "firebase/firestore";
 import Loader from "../../components/global/Loader";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Error from "../../components/global/Error";
 
 export const Chats = () => {
   const { error, setError, baseUrl } = useContext(AppContext);
@@ -134,19 +135,34 @@ export const Chats = () => {
         setUsers((prevUsers) => [newUser, ...prevUsers]);
       }
 
-      await axios.post(
-        `${baseUrl}/api/2/notifications/chatNotification`,
-        {
-          message: messageText,
-          target: "user", // or "user" if sending to a user
-          userId: recipientId, // optional, include only if needed
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
+      // 🔔 Send notification and handle 401
+      try {
+        await axios.post(
+          `${baseUrl}/api/2/notifications/chatNotification`,
+          {
+            message: messageText,
+            target: "user",
+            userId: recipientId,
           },
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("token")}`,
+            },
+          }
+        );
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          // Show toast
+          // toast.error("Session expired. Please log in again.");
+          Error("Session expired. Please log in again.");
+          // Redirect to login
+          setTimeout(() => {
+            window.location.href = "/login"; // Change this if your login path is different
+          }, 1500);
+        } else {
+          console.error("Notification error:", error);
         }
-      );
+      }
 
       scrollToBottom();
       setInput("");
