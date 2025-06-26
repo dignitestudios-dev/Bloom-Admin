@@ -151,14 +151,12 @@ export const Chats = () => {
           }
         );
       } catch (error) {
-        if (error.response && error.response.status === 401) {
-          // Show toast
-          // toast.error("Session expired. Please log in again.");
-          Error("Session expired. Please log in again.");
+        if (error.response.status == 401) {
+          navigate("/login");
+          return (
+            <Error message={"Session expired. Please log in again21321."} />
+          );
           // Redirect to login
-          setTimeout(() => {
-            window.location.href = "/login"; // Change this if your login path is different
-          }, 1500);
         } else {
           console.error("Notification error:", error);
         }
