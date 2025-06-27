@@ -28,7 +28,8 @@ import axios from "axios";
 import Error from "../../components/global/Error";
 
 export const Chats = () => {
-  const { error, setError, baseUrl } = useContext(AppContext);
+
+  const { error, setError, baseUrl, setCountuser } = useContext(AppContext);
   const [userLoading, setUserLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const [reload, setReload] = useState(false);
@@ -187,7 +188,7 @@ export const Chats = () => {
             ...doc.data(),
           }));
 
-          console.log("messages", documentsArray);
+         
 
           setMessages(documentsArray);
           scrollToBottom();
@@ -211,7 +212,7 @@ export const Chats = () => {
   }, [messages]);
   const limitedUsers = users;
   const [count, setCount] = useState([]);
-
+  
   const fetchUnreadCounts = async () => {
     const currentAdminId = Cookies.get("id");
     const counts = [];
@@ -225,13 +226,12 @@ export const Chats = () => {
         messagesRef,
         where(`readBy.${currentAdminId}`, "==", false)
       );
-
+      
       const latestMsgQuery = query(
         messagesRef,
         orderBy("timestamp", "desc"),
         limit(1)
-      );
-
+      );  
       try {
         const [unreadSnap, latestSnap] = await Promise.all([
           getDocs(unreadQuery),
@@ -262,14 +262,15 @@ export const Chats = () => {
     results.sort((a, b) => b.lastMessageTimestamp - a.lastMessageTimestamp);
 
     setCount(results);
+setCountuser(results.count);
+console.log(results,"countuser");
   };
-
   useEffect(() => {
     fetchUnreadCounts();
   }, [users]);
 
   const [filteredData, setFilteredData] = useState([]);
-  // console.log(count,"querySnapshot");
+  console.log(count,"querySnapshot");
   useEffect(() => {
     if (count.length > 0) {
       const countMap = new Map(count.map((c) => [c.userId, c]));
@@ -287,15 +288,21 @@ export const Chats = () => {
           (user?.name || "").toLowerCase().includes(search.toLowerCase())
         )
         .sort((a, b) => b.lastMessageTimestamp - a.lastMessageTimestamp); // 💥 sorting
-
+ console.log(filteredUserData,"filteredUserData");
       setFilteredData(filteredUserData);
     }
   }, [count]);
 
-  console.log(filteredData, count, "filteredData");
-
+  useEffect(() => {
+    if (count.length > 0) {
+      const unreadUsers = count.filter((c) => c.count > 0);
+      console.log("🧮 Total users with unread messages:", unreadUsers.length);
+      setCountuser(unreadUsers.length); // Optional: Store in state if needed
+    }
+  }, [count]);
   return (
     <div className="w-full flex h-[92vh] -m-4 flex-row justify-between bg-white">
+      
       <div className="w-full h-full px-5 flex flex-col justify-between">
         {messageLoading && (
           <div className="w-full col-span-4 h-[80vh] flex items-center justify-center">
@@ -584,7 +591,7 @@ export const Chats = () => {
         <div className="w-full h-auto grid grid-cols-1 gap-0">
           {filteredData?.length > 0 ? (
             filteredData?.map((user, index) => {
-              console.log(user, "countRecord");
+              
               return (
                 <div
                   key={index}
@@ -659,6 +666,7 @@ export const Chats = () => {
                         : ""
                     } `}
                   >
+                 
                     {user?.unreadCount}
                   </div>
                   {/* <button className="w-16 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs ml-auto font-medium">

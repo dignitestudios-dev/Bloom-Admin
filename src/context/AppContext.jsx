@@ -13,6 +13,7 @@ export const AppContextProvider = ({ children }) => {
   };
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [countuser, setCountuser] = useState([]);
   return (
     <AppContext.Provider
       value={{
@@ -23,7 +24,7 @@ export const AppContextProvider = ({ children }) => {
         activeLink,
         setActiveLink,
         success,
-        setSuccess,
+        setSuccess,countuser, setCountuser
       }}
     >
       {children}

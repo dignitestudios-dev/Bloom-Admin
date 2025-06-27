@@ -5,7 +5,7 @@ import { MdOutlineDashboard } from "react-icons/md";
 import { AppContext } from "../../context/AppContext";
 
 const SidebarLink = ({ data }) => {
-  const { navigate, activeLink } = useContext(AppContext);
+  const { navigate, activeLink,countuser } = useContext(AppContext);
   return (
     <button
       onClick={() => navigate(data?.title, data?.url)}
@@ -17,6 +17,11 @@ const SidebarLink = ({ data }) => {
     >
       <span>{data?.icon}</span>
       <span className="text-sm ">{data?.title}</span>
+      <div className="flex justify-end items-center w-full">
+      {data?.title === "Chats" && countuser > 0 && (
+        <span className="text-sm bg-red-700 text-white rounded-full px-2 py-1   ">{countuser}</span>
+      )}
+      </div>
     </button>
   );
 };

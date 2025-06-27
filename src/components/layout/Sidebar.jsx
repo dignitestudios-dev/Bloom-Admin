@@ -7,7 +7,7 @@ import { AppContext } from "../../context/AppContext";
 import Cookies from "js-cookie";
 
 const Sidebar = () => {
-  const { navigate } = useContext(AppContext);
+  const { navigate} = useContext(AppContext);
   return (
     <div className="w-[270px] h-full border-r rounded-r-3xl pr-2 overflow-y-auto flex flex-col items-center justify-start">
       <img src={Logo} alt="logo" className="w-[40%]" />
