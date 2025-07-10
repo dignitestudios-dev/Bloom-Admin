@@ -34,6 +34,7 @@ export const Chats = () => {
   const [users, setUsers] = useState([]);
   const [reload, setReload] = useState(false);
   const [chatRoom, setChatRoom] = useState(null);
+  console.log(chatRoom,"chatRoomIDs");
   const navigate = useNavigate();
 
   const [search, setSearch] = useState("");
@@ -570,7 +571,7 @@ console.log(results,"countuser");
         ) : (
           !messageLoading && (
             <div className="w-full col-span-3 h-[80vh] flex items-center justify-center">
-              <img src="/no-data.jpg" alt="" className="h-96" />
+              <img src="/no-data.png" alt="" className="h-96" />
             </div>
           )
         )}
