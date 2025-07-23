@@ -184,6 +184,7 @@ const DailyDevoCreatePost = ({ id }) => {
       </div>
 
       <button
+        disabled={loading}
         type="submit"
         className="w-full h-12 rounded-full bg-purple-500 text-white text-[16px] font-bold "
       >
