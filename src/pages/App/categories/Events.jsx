@@ -59,6 +59,7 @@ const Events = ({ id, setPostId, setCommentOpen }) => {
                 <EventsCard
                   post={post}
                   key={index}
+                  getAllposts={getAllposts}
                   setUpdate={setReload}
                   categoryId={id}
                   setPostId={setPostId}

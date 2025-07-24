@@ -59,6 +59,7 @@ const DailyDevo = ({ id, setPostId, setCommentOpen }) => {
               return (
                 <DailyDevoPostCard
                   post={post}
+                  getAllposts={getAllposts}
                   setUpdate={setReload}
                   setPostId={setPostId}
                   setCommentOpen={setCommentOpen}

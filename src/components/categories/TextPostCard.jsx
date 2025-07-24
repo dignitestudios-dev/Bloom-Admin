@@ -14,6 +14,7 @@ const TextPostCard = ({
   post,
   categoryId,
   setUpdate,
+  getAllposts,
   setPostId,
   setCommentOpen,
 }) => {
@@ -34,6 +35,7 @@ const TextPostCard = ({
       })
       .then((response) => {
         setUpdate((prev) => !prev);
+        getAllposts();
         setLoading(false);
         setSuccess("Post deleted successfully.");
       })

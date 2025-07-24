@@ -13,6 +13,7 @@ const BrittanyTalksPostCard = ({
   categoryId,
   setPostId,
   setCommentOpen,
+  getAllposts,
 }) => {
   function formatDate(isoDate) {
     const date = new Date(isoDate);
@@ -35,6 +36,7 @@ const BrittanyTalksPostCard = ({
       .then((response) => {
         setUpdate((prev) => !prev);
         setLoading(false);
+        getAllposts();
         setSuccess("Post deleted successfully.");
       })
       .catch((error) => {

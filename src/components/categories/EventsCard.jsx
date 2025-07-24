@@ -12,6 +12,7 @@ const EventsCard = ({
   categoryId,
   setPostId,
   setCommentOpen,
+  getAllposts,
 }) => {
   console.log(post);
   console.log(post);
@@ -65,6 +66,7 @@ const EventsCard = ({
       })
       .then((response) => {
         setUpdate((prev) => !prev);
+        getAllposts();
         setLoading(false);
         setSuccess("Post deleted successfully.");
       })

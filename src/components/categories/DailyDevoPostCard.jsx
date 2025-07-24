@@ -11,7 +11,7 @@ import { MdDeleteOutline } from "react-icons/md";
 import DeletionModal from "./DeletionModal";
 import PostModal from "./PostModal";
 
-const DailyDevoPostCard = ({ post, setUpdate, setPostId, setCommentOpen }) => {
+const DailyDevoPostCard = ({ post, setUpdate, setPostId, setCommentOpen, getAllposts }) => {
   const [viewAll, setViewAll] = useState(false);
   const { error, setError, baseUrl, success, setSuccess } =
     useContext(AppContext);
@@ -27,6 +27,7 @@ const DailyDevoPostCard = ({ post, setUpdate, setPostId, setCommentOpen }) => {
       .then((response) => {
         setUpdate((prev) => !prev);
         setLoading(false);
+        getAllposts();
         setSuccess("Post deleted successfully.");
       })
       .catch((error) => {

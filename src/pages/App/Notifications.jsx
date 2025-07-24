@@ -17,7 +17,6 @@ const Notifications = () => {
   const [notificationLoading, setNotificationLoading] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [reload, setReload] = useState(false);
-  const [activeTab, setActiveTab] = useState("admin");
 
   const [search, setSearch] = useState("");
 
@@ -56,8 +55,8 @@ const Notifications = () => {
   };
 
   useEffect(() => {
-    activeTab == "admin" ? getAdminNotifications() : getUserNotifications();
-  }, [reload, activeTab]);
+    getUserNotifications();
+  }, [reload]);
 
   const filteredData = notifications.filter((notification) =>
     notification?.title?.toLowerCase().includes(search?.toLowerCase())
@@ -105,8 +104,8 @@ const Notifications = () => {
       </button>
 
       <div className="w-full h-auto flex justify-between items-center gap-2">
-        <div className="w-[40%] grid grid-cols-2 shadow-sm lg:flex  px-[2px] py-[2px] border border-gray-200 bg-white h-12 rounded-full">
-          <button
+        <div className="w-[50%] shadow-sm lg:flex  px-[2px] py-[2px] border border-gray-200 bg-white h-12 rounded-full">
+          {/* <button
             onClick={() => setActiveTab("admin")}
             className={`min-w-[90px] w-full px-4 py-2 capitalize text-sm font-normal leading-[17.58px] ${
               activeTab === "admin"
@@ -115,19 +114,14 @@ const Notifications = () => {
             } rounded-l-full `}
           >
             Admin
-          </button>
+          </button> */}
           <button
-            onClick={() => setActiveTab("user")}
-            className={`min-w-[90px] w-full px-4 py-2 capitalize text-sm font-normal leading-[17.58px] ${
-              activeTab === "user"
-                ? "bg-purple-500 text-white"
-                : "bg-white text-black"
-            } rounded-r-full `}
+            className={`min-w-[90px] w-full px-4 py-2 capitalize bg-purple-500 text-white text-sm font-normal leading-[17.58px] rounded-full `}
           >
             User
           </button>
         </div>
-        <div className="w-[60%] h-12 flex justify-start items-center gap-2  relative">
+        <div className="w-[50%] h-12 flex justify-start items-center gap-2  relative">
           <input
             type="text"
             id="name"

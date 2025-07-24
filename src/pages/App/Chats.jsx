@@ -6,6 +6,7 @@ import { TbFlagHeart } from "react-icons/tb";
 import { FaHeart } from "react-icons/fa";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { AppContext } from "../../context/AppContext";
+
 import Cookies from "js-cookie";
 import { db } from "../../firebase/firebase";
 import {
@@ -292,7 +293,7 @@ console.log(results,"countuser");
  console.log(filteredUserData,"filteredUserData");
       setFilteredData(filteredUserData);
     }
-  }, [count]);
+  }, [count,search]);
 
   useEffect(() => {
     if (count.length > 0) {
@@ -589,101 +590,105 @@ console.log(results,"countuser");
             <FiSearch />
           </button>
         </div>
+        {userLoading ? <Loader /> :
         <div className="w-full h-auto grid grid-cols-1 gap-0">
-          {filteredData?.length > 0 ? (
-            filteredData?.map((user, index) => {
-              
-              return (
-                <div
-                  key={index}
-                  onClick={async () => {
-                    setChatRoom(user?.id);
+        {filteredData?.length > 0 ? (
+          filteredData?.map((user, index) => {
+            
+            return (
+              <div
+                key={index}
+                onClick={async () => {
+                  setChatRoom(user?.id);
 
-                    const currentAdminId = Cookies.get("id");
-                    const messagesRef = collection(
+                  const currentAdminId = Cookies.get("id");
+                  const messagesRef = collection(
+                    db,
+                    "chatroom",
+                    user?.id,
+                    "messages"
+                  );
+                  const q = query(
+                    messagesRef,
+                    where(`readBy.${currentAdminId}`, "==", false)
+                  );
+
+                  const snapshot = await getDocs(q);
+
+                  const updatePromises = snapshot.docs.map((docSnap) => {
+                    const messageRef = doc(
                       db,
                       "chatroom",
                       user?.id,
-                      "messages"
+                      "messages",
+                      docSnap.id
                     );
-                    const q = query(
-                      messagesRef,
-                      where(`readBy.${currentAdminId}`, "==", false)
-                    );
-
-                    const snapshot = await getDocs(q);
-
-                    const updatePromises = snapshot.docs.map((docSnap) => {
-                      const messageRef = doc(
-                        db,
-                        "chatroom",
-                        user?.id,
-                        "messages",
-                        docSnap.id
-                      );
-                      return updateDoc(messageRef, {
-                        [`readBy.${currentAdminId}`]: true,
-                      });
+                    return updateDoc(messageRef, {
+                      [`readBy.${currentAdminId}`]: true,
                     });
+                  });
 
-                    // Reset totalCount for this user
-                    const chatroomRef = doc(db, "chatroom", user?.id);
-                    const resetCount = updateDoc(chatroomRef, {
-                      [`totalCount.${currentAdminId}`]: 0,
-                    });
+                  // Reset totalCount for this user
+                  const chatroomRef = doc(db, "chatroom", user?.id);
+                  const resetCount = updateDoc(chatroomRef, {
+                    [`totalCount.${currentAdminId}`]: 0,
+                  });
 
-                    await Promise.all([...updatePromises, resetCount]);
+                  await Promise.all([...updatePromises, resetCount]);
 
-                    fetchUnreadCounts();
-                  }}
-                  className={`w-full h-20 ${
-                    user?.unreadCount > 0 ? "bg-gray-100" : ""
-                  } hover:bg-purple-500/[0.2]                                   
-                  cursor-pointer border-b px-3 hidden lg:flex justify-between items-center gap-2`}
-                >
-                  <div className="w-auto h-auto flex justify-start items-center gap-2">
-                    <span className="w-auto h-auto relative">
-                      <img
-                        src={
-                          user?.profilePicture
-                            ? user?.profilePicture
-                            : `https://eu.ui-avatars.com/api/?name=${user?.name}&size=250`
-                        }
-                        className="w-10 h-10 rounded-full shadow-sm"
-                      />
-                      {/* <span className="w-3 h-3 rounded-full bg-green-500 shadow-md absolute bottom-0 right-0" /> */}
-                    </span>
-                    <div className="w-auto flex flex-col justify-start items-start">
-                      <h3 className="text-sm font-semibold">{user?.name}</h3>
-                      <h3 className="text-xs text-gray-700 font-semibold">
-                        {user?.email}
-                      </h3>
-                    </div>
+                  fetchUnreadCounts();
+                }}
+                className={`w-full h-20 ${
+                  user?.unreadCount > 0 ? "bg-gray-100" : ""
+                } hover:bg-purple-500/[0.2]                                   
+                cursor-pointer border-b px-3 hidden lg:flex justify-between items-center gap-2`}
+              >
+                <div className="w-auto h-auto flex justify-start items-center gap-2">
+                  <span className="w-auto h-auto relative">
+                    <img
+                      src={
+                        user?.profilePicture
+                          ? user?.profilePicture
+                          : `https://eu.ui-avatars.com/api/?name=${user?.name}&size=250`
+                      }
+                      className="w-10 h-10 rounded-full shadow-sm"
+                    />
+                    {/* <span className="w-3 h-3 rounded-full bg-green-500 shadow-md absolute bottom-0 right-0" /> */}
+                  </span>
+                  <div className="w-auto flex flex-col justify-start items-start">
+                    <h3 className="text-sm font-semibold">{user?.name}</h3>
+                    <h3 className="text-xs text-gray-700 font-semibold">
+                      {user?.email}
+                    </h3>
                   </div>
-                  <div
-                    className={`flex items-center justify-center rounded-full text-[18px] font-semibold ${
-                      user?.unreadCount
-                        ? "w-8 h-8 bg-purple-500 text-white"
-                        : ""
-                    } `}
-                  >
-                 
-                    {user?.unreadCount}
-                  </div>
-                  {/* <button className="w-16 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs ml-auto font-medium">
-            Delete
-          </button> */}
                 </div>
-              );
-            })
-          ) : (
-            <div className="w-full h-full flex justify-center items-center">
-              <h3 className="text-md font-bold text-gray-500">
-                No such user onboarded!
-              </h3>
-            </div>
-          )}
-        </div>
+                <div
+                  className={`flex items-center justify-center rounded-full text-[18px] font-semibold ${
+                    user?.unreadCount
+                      ? "w-8 h-8 bg-purple-500 text-white"
+                      : ""
+                  } `}
+                >
+               
+                  {user?.unreadCount}
+                </div>
+                {/* <button className="w-16 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white text-xs ml-auto font-medium">
+          Delete
+        </button> */}
+              </div>
+            );
+          })
+        ) : (
+          <div className="w-full h-full flex justify-center items-center">
+            
+             <h3 className="text-md font-bold text-gray-500">
+              No such user onboarded!
+            </h3>
+          </div>
+        )}
+      </div>
+        }
+        
       </div>
     </div>
   );

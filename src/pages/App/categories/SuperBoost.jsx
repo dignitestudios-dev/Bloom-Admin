@@ -58,6 +58,7 @@ const SuperBoost = ({ id, setPostId, setCommentOpen }) => {
                 <SuperBoostPostCard
                   key={index}
                   post={post}
+                  getAllposts={getAllposts}
                   setUpdate={setReload}
                   categoryId={id}
                   setPostId={setPostId}

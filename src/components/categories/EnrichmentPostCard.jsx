@@ -13,6 +13,7 @@ const EnrichmentPostCard = ({
   categoryId,
   setPostId,
   setCommentOpen,
+  getAllposts,
 }) => {
   console.log(post);
   function formatDate(isoDate) {
@@ -33,7 +34,8 @@ const EnrichmentPostCard = ({
       .delete(`${baseUrl}/api/enrichment/${categoryId}/${postId}`, { headers })
       .then((response) => {
         setUpdate((prev) => !prev);
-        setLoading(false);
+        getAllposts();
+          setLoading(false);
         setSuccess("Post deleted successfully.");
       })
       .catch((error) => {

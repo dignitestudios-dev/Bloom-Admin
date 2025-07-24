@@ -61,6 +61,7 @@ const TextPost = ({ id, setPostId, setCommentOpen }) => {
                 <TextPostCard
                   post={post}
                   setUpdate={setReload}
+                  getAllposts={getAllposts}
                   categoryId={id}
                   setPostId={setPostId}
                   setCommentOpen={setCommentOpen}

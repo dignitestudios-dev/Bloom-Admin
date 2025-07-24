@@ -1,6 +1,6 @@
 import React from "react";
 
-const BrittanyPlaylistCard = ({ post, setPostId, setCommentOpen }) => {
+const BrittanyPlaylistCard = ({ post, setPostId, setCommentOpen, getAllposts }) => {
   return (
     <div class="bg-white w-full h-[26rem] relative shadow rounded-2xl border p-3">
       <div class="group h-64 relative">

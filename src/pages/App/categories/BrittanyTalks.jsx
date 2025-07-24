@@ -58,6 +58,7 @@ const BrittanyTalks = ({ id, setPostId, setCommentOpen }) => {
               return (
                 <BrittanyTalksPostCard
                   post={post}
+                  getAllposts={getAllposts}
                   key={index}
                   setUpdate={setReload}
                   categoryId={id}

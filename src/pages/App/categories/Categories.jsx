@@ -62,7 +62,12 @@ const Categories = () => {
     }
   };
 
-  useEffect(() => {
+  
+ 
+
+
+
+ useEffect(() => {
     getCategories();
   }, [update]);
 

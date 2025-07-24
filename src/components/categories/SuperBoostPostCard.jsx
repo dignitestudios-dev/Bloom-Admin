@@ -12,6 +12,7 @@ const SuperBoostPostCard = ({
   setUpdate,
   setPostId,
   setCommentOpen,
+  getAllposts,
 }) => {
   const { error, setError, baseUrl, success, setSuccess } =
     useContext(AppContext);
@@ -29,6 +30,7 @@ const SuperBoostPostCard = ({
       .then((response) => {
         setUpdate((prev) => !prev);
         setLoading(false);
+        getAllposts();
         setSuccess("Post deleted successfully.");
       })
       .catch((error) => {

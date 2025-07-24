@@ -7,7 +7,7 @@ import { GoKebabHorizontal } from "react-icons/go";
 import DeletionModal from "./DeletionModal";
 import { useNavigate } from "react-router-dom";
 
-const BloomingPostCard = ({ post, setUpdate, setPostId, setCommentOpen }) => {
+const BloomingPostCard = ({ post, setUpdate, setPostId, setCommentOpen, getAllposts }) => {
   const { error, setError, baseUrl, success, setSuccess } =
     useContext(AppContext);
   const navigate = useNavigate();
@@ -22,6 +22,7 @@ const BloomingPostCard = ({ post, setUpdate, setPostId, setCommentOpen }) => {
       .delete(`${baseUrl}/api/blooming/${categoryId}/${postId}`, { headers })
       .then((response) => {
         setUpdate((prev) => !prev);
+        getAllposts();
         setLoading(false);
         setSuccess("Post deleted successfully.");
       })

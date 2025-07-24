@@ -61,6 +61,7 @@ const Enrichment = ({ id, setPostId, setCommentOpen }) => {
                   post={post}
                   key={index}
                   setUpdate={setReload}
+                  getAllposts={getAllposts}
                   categoryId={id}
                   setPostId={setPostId}
                   setCommentOpen={setCommentOpen}

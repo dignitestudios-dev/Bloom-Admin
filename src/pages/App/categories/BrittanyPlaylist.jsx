@@ -95,6 +95,7 @@ const BrittanyPlaylist = ({ id, setPostId, setCommentOpen }) => {
               return (
                 <BrittanyPlaylistCard
                   key={index}
+                  getAllposts={getAllposts}
                   post={post}
                   setPostId={setPostId}
                   setCommentOpen={setCommentOpen}

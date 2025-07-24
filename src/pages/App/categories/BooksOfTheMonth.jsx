@@ -60,6 +60,7 @@ const BooksOfTheMonth = ({ id, setPostId, setCommentOpen }) => {
                 <BooksOfTheMonthPostCard
                   key={index}
                   post={post}
+                  getAllposts={getAllposts}
                   setUpdate={setReload}
                   setPostId={setPostId}
                   setCommentOpen={setCommentOpen}

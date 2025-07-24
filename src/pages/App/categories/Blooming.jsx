@@ -59,6 +59,7 @@ const Blooming = ({ id, setPostId, setCommentOpen }) => {
                 <BloomingPostCard
                   key={index}
                   post={post}
+                  getAllposts={getAllposts}
                   setUpdate={setReload}
                   setPostId={setPostId}
                   setCommentOpen={setCommentOpen}

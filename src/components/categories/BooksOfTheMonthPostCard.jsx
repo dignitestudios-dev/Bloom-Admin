@@ -12,6 +12,7 @@ const BooksOfTheMonthPostCard = ({
   setUpdate,
   setPostId,
   setCommentOpen,
+  getAllposts,
 }) => {
   function formatDate(isoDate) {
     const date = new Date(isoDate);
@@ -34,6 +35,7 @@ const BooksOfTheMonthPostCard = ({
       .delete(`${baseUrl}/api/book/${categoryId}/${postId}`, { headers })
       .then((response) => {
         setUpdate((prev) => !prev);
+        getAllposts();
         setLoading(false);
         setSuccess("Post deleted successfully.");
       })
