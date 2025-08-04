@@ -24,11 +24,10 @@ const DailyDevoCreatePost = ({ id }) => {
   };
 
   const handleImageChange = (e) => {
-    
     const file = e.target.files[0];
     if (file) {
-      const maxSize = 300 * 1024 * 1024; // 300MB in bytes
-  
+      const maxSize = 3 * 1024 * 1024 * 1024; // 300MB in bytes
+
       if (file.size > maxSize) {
         alert("File size 300MB se zyada hai. Please choti file upload karein.");
         setImageError(true); // Show error if you're using this in UI

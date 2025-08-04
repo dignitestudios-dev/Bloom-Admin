@@ -27,7 +27,7 @@ const HeyYouCreatePost = ({ id }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+    const maxSize = 3 * 1024 * 1024 * 1024; // 2 MB in bytes
 
     if (file) {
       if (file.size > maxSize) {
