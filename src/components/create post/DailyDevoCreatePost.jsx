@@ -29,11 +29,12 @@ const DailyDevoCreatePost = ({ id }) => {
       const maxSize = 3 * 1024 * 1024 * 1024; // 300MB in bytes
 
       if (file.size > maxSize) {
-        alert("File size 300MB se zyada hai. Please choti file upload karein.");
-        setImageError(true); // Show error if you're using this in UI
+      //  alert("File size 3gb se zyada hai. Please choti file upload karein.");
+        setImageError(true); 
         return;
       }
     }
+    
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
