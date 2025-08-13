@@ -12,6 +12,7 @@ import Error from "../global/Error";
 import { dailydevo } from "../../data/create/dailydevo";
 import { dailydevocreate } from "../../schemas/create/DailyDevo";
 import { AppContext } from "../../context/AppContext";
+import { ErrorToast } from "../global/Toaster";
 
 const DailyDevoCreatePost = ({ id }) => {
   const [images, setImages] = useState(null);
@@ -26,10 +27,11 @@ const DailyDevoCreatePost = ({ id }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const maxSize = 3 * 1024 * 1024 * 1024; 
+      const maxSize = 3 * 1024 * 1024; 
       if (file.size > maxSize) {
+        ErrorToast("File size Less than 3GB");
         setImageError(true);
-        return <Error message={"File size Less than 3GB"} />;
+        return;
       }
     }
 

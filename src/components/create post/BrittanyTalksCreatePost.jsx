@@ -10,6 +10,7 @@ import { AppContext } from "../../context/AppContext";
 import { brittanytalks } from "../../data/create/brittanytalks";
 import { brittanytalkscreate } from "../../schemas/create/BrittanyTalks";
 import BtnLoader from "../global/BtnLoader";
+import { ErrorToast } from "../global/Toaster";
 
 const BrittanyTalksCreatePost = ({ id }) => {
   const [images, setImages] = useState(null);
@@ -60,6 +61,7 @@ const BrittanyTalksCreatePost = ({ id }) => {
       const maxSizeInBytes = maxSizeInMB * 1024 * 1024 * 1024;
 
       if (file.size > maxSizeInBytes) {
+        ErrorToast("File size should be less than 3GB");
         setVideoError("File size should be less than 3GB");
         setVideo(null);
         setVideoBase(null);

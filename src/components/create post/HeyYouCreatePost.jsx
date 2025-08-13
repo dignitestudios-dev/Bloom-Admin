@@ -27,16 +27,15 @@ const HeyYouCreatePost = ({ id }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    const maxSize = 3 * 1024 * 1024 * 1024; // 2 MB in bytes
+    const maxSize = 10 * 1024 * 1024; // 2 MB in bytes
 
     if (file) {
       if (file.size > maxSize) {
-        setImageError("Max image size is 3 GB");
-        setImageBase(null); // Clear any existing image base
-        setImages(null); // Clear any existing image file
-        return; // Exit function
+        setImageError("Max image size is 10 MB");
+        setImageBase(null); 
+        setImages(null); 
+        return; 
       }
-
       const reader = new FileReader();
       reader.onloadend = () => {
         setImageBase(reader.result);
