@@ -31,7 +31,7 @@ const HeyYouCreatePost = ({ id }) => {
 
     if (file) {
       if (file.size > maxSize) {
-        setImageError("Max image size is 2 MB");
+        setImageError("Max image size is 3 GB");
         setImageBase(null); // Clear any existing image base
         setImages(null); // Clear any existing image file
         return; // Exit function

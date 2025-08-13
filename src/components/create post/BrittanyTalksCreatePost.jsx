@@ -60,7 +60,7 @@ const BrittanyTalksCreatePost = ({ id }) => {
       const maxSizeInBytes = maxSizeInMB * 1024 * 1024 * 1024;
 
       if (file.size > maxSizeInBytes) {
-        setVideoError("File size should be less than 300MB");
+        setVideoError("File size should be less than 3GB");
         setVideo(null);
         setVideoBase(null);
         setVideoDuration(null);

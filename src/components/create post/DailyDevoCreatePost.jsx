@@ -26,15 +26,13 @@ const DailyDevoCreatePost = ({ id }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const maxSize = 3 * 1024 * 1024 * 1024; // 300MB in bytes
-
+      const maxSize = 3 * 1024 * 1024 * 1024; 
       if (file.size > maxSize) {
-      //  alert("File size 3gb se zyada hai. Please choti file upload karein.");
-        setImageError(true); 
-        return;
+        setImageError(true);
+        return <Error message={"File size Less than 3GB"} />;
       }
     }
-    
+
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
