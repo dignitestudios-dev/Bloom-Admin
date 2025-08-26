@@ -17,6 +17,7 @@ const BrittanyTalksCreatePost = ({ id }) => {
   const [imageBase, setImageBase] = useState(null);
   const [imageError, setImageError] = useState(false);
   const [video, setVideo] = useState(null);
+
   const [videoBase, setVideoBase] = useState(null);
   const [videoError, setVideoError] = useState(false);
   const [videoDuration, setVideoDuration] = useState(null);
@@ -121,12 +122,16 @@ const BrittanyTalksCreatePost = ({ id }) => {
           formdata.append("categoryId", id);
           formdata.append("duration", videoDuration);
 
+          for (let [key, value] of formdata.entries()) {
+            console.log(key, value);
+          }
           try {
             const response = await axios.post(
               `${baseUrl}/api/brittanyTalk`,
               formdata,
               { headers }
             );
+            console.log("this is response --- > ",response);
             setSuccess("Post Created Successfully.");
             values.title = "";
             values.description = "";
