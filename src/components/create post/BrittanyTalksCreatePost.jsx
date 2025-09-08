@@ -54,13 +54,14 @@ const BrittanyTalksCreatePost = ({ id }) => {
       setImages(file);
     }
   };
-
+  
   const handleVideoChange = (e) => {
+   
     const file = e.target.files[0];
     if (file) {
-      const maxSizeInMB = 3;
-      const maxSizeInBytes = maxSizeInMB * 1024 * 1024 * 1024;
-
+      const maxSizeInMB = 3072; // 3 GB
+      const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
+      
       if (file.size > maxSizeInBytes) {
         ErrorToast("File size should be less than 3GB");
         setVideoError("File size should be less than 3GB");
@@ -69,23 +70,23 @@ const BrittanyTalksCreatePost = ({ id }) => {
         setVideoDuration(null);
         return;
       }
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setVideoBase(reader.result);
-      };
-      reader.readAsDataURL(file);
-      setVideoError(false);
+      
+      // ❌ FileReader ki jagah ye use karo
+      const videoURL = URL.createObjectURL(file);
+      setVideoBase(videoURL); // ab ye preview me direct chalega
       setVideo(file);
-
-      // Create a video element to calculate duration
+      setVideoError(false);
+      
+      // Duration nikalne ke liye
       const videoElement = document.createElement("video");
-      videoElement.src = URL.createObjectURL(file);
+      videoElement.src = videoURL;
       videoElement.onloadedmetadata = () => {
         const durationInSeconds = videoElement.duration;
-        setVideoDuration(formatDuration(durationInSeconds)); // Set the formatted video duration
+        setVideoDuration(formatDuration(durationInSeconds));
       };
     }
   };
+  
 
   const handleRemoveImage = () => {
     setImages(null);
@@ -131,6 +132,7 @@ const BrittanyTalksCreatePost = ({ id }) => {
               formdata,
               { headers }
             );
+            console.log("this is values --- > ",formdata); 
             console.log("this is response --- > ",response);
             setSuccess("Post Created Successfully.");
             values.title = "";
@@ -147,7 +149,6 @@ const BrittanyTalksCreatePost = ({ id }) => {
         }
       },
     });
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -171,12 +172,18 @@ const BrittanyTalksCreatePost = ({ id }) => {
               accept="video/mp4"
               onChange={handleVideoChange}
             />
-            <div className="w-full h-full rounded-xl flex flex-col justify-center items-center">
+            <div className="w-full h-full rounded-xl flex flex-col justify-center items-center relative">
               {videoBase ? (
-                <video controls className="w-full h-full object-contain">
+                <>
+                <video controls className="w-full h-full object-contain  rounded-[20px]">
                   <source src={videoBase} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
+                  {/* <MdClose size={18} color="white"
+                onClick={handleRemoveVideo}
+                  className="absolute top-2 right-0 cursor-pointer z-50 bg-red-500 rounded-full p-1"
+                /> */}
+                </>
               ) : (
                 <>
                   <PiVideoLight className="text-3xl text-gray-600 font-medium" />
@@ -190,6 +197,7 @@ const BrittanyTalksCreatePost = ({ id }) => {
             {videoError && (
               <p className="text-red-700 mb-1 text-sm font-medium">
                 {videoError}
+              
               </p>
             )}
           </div>
