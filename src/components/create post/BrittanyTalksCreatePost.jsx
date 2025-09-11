@@ -13,6 +13,7 @@ import BtnLoader from "../global/BtnLoader";
 import { ErrorToast } from "../global/Toaster";
 
 const BrittanyTalksCreatePost = ({ id }) => {
+  const [uploadPercent, setUploadPercent] = useState(0);
   const [images, setImages] = useState(null);
   const [imageBase, setImageBase] = useState(null);
   const [imageError, setImageError] = useState(false);
@@ -130,7 +131,13 @@ const BrittanyTalksCreatePost = ({ id }) => {
             const response = await axios.post(
               `${baseUrl}/api/brittanyTalk`,
               formdata,
-              { headers }
+              {  
+                headers,
+                onUploadProgress: (progressEvent) => {
+                  const { loaded, total } = progressEvent;
+                  const percent = Math.round((loaded * 100) / total);
+                  setUploadPercent(percent) }
+              }
             );
             console.log("this is values --- > ",formdata); 
             console.log("this is response --- > ",response);
@@ -291,12 +298,23 @@ const BrittanyTalksCreatePost = ({ id }) => {
           </p>
         )}
       </div>
+      {loading && (
+  <div className="w-full bg-gray-200 rounded-full h-3 mt-2">
+    <div
+      className="bg-purple-500 h-3 rounded-full text-md text-white flex items-center justify-center"
+      style={{ width: `${uploadPercent}%` }}
+    >
+      {uploadPercent}%
+    </div>
+  </div>
+)}
       <button
         type="submit"
         className="w-full h-12 rounded-full bg-purple-500 text-white text-[16px] font-bold "
       >
         {loading ? <BtnLoader /> : "Add Video"}
       </button>
+ 
     </form>
   );
 };
