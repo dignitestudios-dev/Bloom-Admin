@@ -72,6 +72,7 @@ export const Chats = () => {
   const [message, setMessage] = useState("");
   const [groupedMessages, setGroupedMessages] = useState([]);
   const messageEndRef = useRef();
+  const inputRef = useRef(null);
 
   const groupMessagesByDate = (messages) => {
     return messages?.reduce((groups, message) => {
@@ -92,8 +93,25 @@ export const Chats = () => {
 
   const [sending, setSending] = useState(false);
 
-  async function sendMessage(chatRoomId, messageText, e) {
-    e.preventDefault();
+  const resizeMessageInput = () => {
+    if (!inputRef.current) {
+      return;
+    }
+
+    inputRef.current.style.height = "auto";
+    inputRef.current.style.height = `${Math.min(
+      inputRef.current.scrollHeight,
+      140
+    )}px`;
+  };
+
+  async function sendMessage(chatRoomId, messageText) {
+    const trimmedMessage = messageText.trim();
+
+    if (!chatRoomId || !trimmedMessage || sending) {
+      return;
+    }
+
     try {
       setSending(true);
       const senderId = Cookies.get("id");
@@ -104,7 +122,7 @@ export const Chats = () => {
 
       const messageData = {
         senderId,
-        message: messageText,
+        message: trimmedMessage,
         readBy: {
           [senderId]: true,
           [recipientId]: false,
@@ -115,7 +133,7 @@ export const Chats = () => {
         await axios.post(
           `${baseUrl}/api/2/notifications/chatNotification`,
           {
-            message: messageText,
+            message: trimmedMessage,
             target: "user",
             userId: recipientId,
           },
@@ -166,6 +184,9 @@ export const Chats = () => {
 
       scrollToBottom();
       setInput("");
+      if (inputRef.current) {
+        inputRef.current.style.height = "auto";
+      }
       setSending(false);
     } catch (e) {
       setSending(false);
@@ -174,6 +195,16 @@ export const Chats = () => {
   }
 
   const [input, setInput] = useState("");
+
+  useEffect(() => {
+    resizeMessageInput();
+  }, [input]);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.style.height = "auto";
+    }
+  }, [chatRoom]);
 
   useEffect(() => {
     if (chatRoom !== null) {
@@ -349,22 +380,30 @@ console.log(results,"countuser");
             </div>
             <form
               onSubmit={(e) => {
-                sendMessage(chatRoom, input, e);
+                e.preventDefault();
+                sendMessage(chatRoom, input);
               }}
-              className="py-5 w-full relative flex justify-center items-center gap-2"
+              className="py-5 w-full relative flex justify-center items-end gap-2"
             >
-              <input
-                className="w-[100%] shadow-md py-3 px-4 border outline-none focus:border-purple-500 rounded-full"
-                type="text"
+              <textarea
+                ref={inputRef}
+                rows={1}
+                className="w-full shadow-md py-3 pl-4 pr-14 border outline-none focus:border-purple-500 rounded-3xl resize-none min-h-[48px] max-h-[140px] overflow-y-auto leading-6"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
+                onInput={resizeMessageInput}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage(chatRoom, input);
+                  }
+                }}
                 placeholder="Type your message here..."
               />
               <button
-                onClick={(e) => {
-                  sendMessage(chatRoom, input, e);
-                }}
-                className="w-10 h-10 absolute right-2 shadow-md rounded-full bg-purple-500 hover:opacity-95 text-xl text-white flex items-center justify-center font-medium"
+                type="submit"
+                disabled={sending || !input.trim()}
+                className="w-10 h-10 absolute right-2 bottom-7 shadow-md rounded-full bg-purple-500 hover:opacity-95 disabled:opacity-60 disabled:cursor-not-allowed text-xl text-white flex items-center justify-center font-medium"
               >
                 {sending ? (
                   <svg
