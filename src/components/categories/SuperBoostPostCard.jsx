@@ -78,7 +78,7 @@ const SuperBoostPostCard = ({
         {/* Date Badge */}
         <div className="absolute top-3 left-3 bg-purple-500/80 backdrop-blur-sm px-3 py-1 rounded-full">
           <p className="text-white text-xs font-semibold">
-            {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+            {post?.createdAt ? new Date(post.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : ""}
           </p>
         </div>
 
@@ -158,11 +158,11 @@ const SuperBoostPostCard = ({
               
               {/* Date */}
               <p className="text-purple-600 text-xs font-semibold mb-3">
-                {new Date().toLocaleDateString("en-US", { 
+                {post?.createdAt ? new Date(post.createdAt).toLocaleDateString("en-US", { 
                   month: "long", 
                   day: "numeric", 
                   year: "numeric" 
-                })}
+                }) : ""}
               </p>
 
               {/* Full Description */}
