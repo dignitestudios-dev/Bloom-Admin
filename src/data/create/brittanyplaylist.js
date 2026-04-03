@@ -1,3 +1,9 @@
 export const brittanyplaylist = {
-  url: "",
+  title: "",
+  description: "",
+  appleMusicUrl: "",
+  spotifyUrl: "",
+  songs: [
+    { songName: "", artistName: "", appleMusicUrl: "", spotifyUrl: "" },
+  ],
 };
